@@ -41,8 +41,8 @@ import styles from "./styles";
 
 export default class ListItemRekomendasi extends Component {
 
-  showDetail(){
-    Actions.gunung_detail();
+  showDetail(data){
+    Actions.gunung_detail({dataProps:data});
   }
 
   render(){
@@ -55,14 +55,19 @@ export default class ListItemRekomendasi extends Component {
           style={styles.cardImage}
           onPress={() =>
             // this.onLearnMore(rowData.name, rowData.watch, rowData.distance)
-            this.showDetail()
+            this.showDetail(rowData)
           }
         >
-          <Image style={styles.cardBgImage} source={rowData.cardBg} />
+          {/* <ImageBackground
+            source={Images.No_image_found}
+            style={{width: '100%', height: '100%'}}
+          >  */}
+            <Image style={styles.cardBgImage} source={rowData.destinationImg} />
+          {/* </ImageBackground> */}
 
           <View style={styles.postDetailBg}>
             <View style={styles.profileDetailBg}>
-              <Text style={styles.nameTxt}>{rowData.name}</Text>
+              <Text style={styles.nameTxt}>{rowData.destinationName}</Text>
               <View style={styles.watchDistanceBg}>
                 <View style={styles.mapPin}>
                   <FontAwesome name="map-marker" size={12} color="white" />

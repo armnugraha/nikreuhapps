@@ -198,7 +198,7 @@ export default class Example extends Component {
                         hideNavBar
                       />
                     </Stack> */}
-                    <Stack key="tab_4" title="Favorite" icon={TabIcon}>
+                    <Stack key="tab_4" title="Lorem" icon={TabIcon}>
                       <Scene
                         key="tab_4_1"
                         component={Kosong}
@@ -207,7 +207,7 @@ export default class Example extends Component {
                         icon={TabIcon}
                       />
                     </Stack>
-                    <Stack key="tab_5" title="Profile" icon={TabIcon}>
+                    <Stack key="tab_5" title="Lorem" icon={TabIcon}>
                       <Scene
                         key="tab_5_1"
                         component={Kosong}

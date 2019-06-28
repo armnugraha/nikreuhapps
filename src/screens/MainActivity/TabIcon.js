@@ -149,8 +149,14 @@ const TabIcon = props => {
   } else {
     myTabIcon.push(
       <View key={4} style={{ alignItems: "center" }}>
-        <Image style={{ width: 25, height: 25 }} source={Images.gflagicon} />
-        <Text style={{ color: props.focused ? "#ff7354" : "yellow" }}>
+        <FontAwesome name="clock" size={16} color={props.focused ? "#59c264" : "grey"} />
+        <Text
+          style={{
+            color: props.focused ? "#59c264" : "grey",
+            marginTop: Metrics.WIDTH * 0.008,
+            fontSize: Fonts.moderateScale(13)
+          }}
+        >
           {props.title}
         </Text>
       </View>

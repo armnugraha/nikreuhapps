@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StatusBar, Platform, ImageBackground,Dimensions,TouchableOpacity, ListView, ScrollView, BackHandler, I18nManager, Modal} from 'react-native';
+import { Text, View, Image, StatusBar, Platform, ImageBackground,Dimensions,TouchableOpacity, ListView, ScrollView, BackHandler, I18nManager, Modal, Linking} from 'react-native';
 import { Container, Button, Icon, Right, Item, Input, Header, Footer, FooterTab, Left, Body, Title, Content, Form, Label} from 'native-base';
 // Screen Styles
 import styles from './styles';
@@ -69,6 +69,8 @@ export default class ProfileNewsFeedThree extends Component {
     
     const {renderHeader,renderList,renderFooter} = this.state;
 
+    var {dataProps} = this.props
+
     var that = this;
 
     var data = [
@@ -136,7 +138,7 @@ export default class ProfileNewsFeedThree extends Component {
         {
           renderHeader &&
           <View>
-            <ImageBackground source={{uri:headerBG}} style={styles.headerImageBG}>
+            <ImageBackground source={dataProps.destinationImg} style={styles.headerImageBG}>
               <Header style={styles.header}>
                   <Left style={styles.left}>
                     <TouchableOpacity style={styles.backArrow}  onPress={()=>Actions.pop()}>
@@ -151,13 +153,17 @@ export default class ProfileNewsFeedThree extends Component {
                   </Right>
               </Header>
             </ImageBackground>
+
             <View style={styles.profileContent}>
-              <Text style={styles.levelNo}><FontAwesome name={"phone"} size={32} color='white'/></Text>
+              <TouchableOpacity
+                onPress={() => Linking.openURL('whatsapp://send?text=hello&phone=+6287822516625')}>
+                  <Text style={styles.levelNo}><FontAwesome name={"phone"} size={32} color='white'/></Text>
+              </TouchableOpacity>
             </View>
 
             <View style={styles.levelDescView}>
-              <Text style={styles.titleText}>Gunung Papandayan</Text>
-              <Text style={styles.descText}>Garut, Jawa Barat</Text>
+              <Text style={styles.titleText}>{dataProps.destinationName}</Text>
+              <Text style={styles.descText}>{dataProps.place}</Text>
               <View style={styles.starView}>
                 <Stars
                     half={true}
@@ -216,8 +222,16 @@ export default class ProfileNewsFeedThree extends Component {
 
             <View style={styles.listMainView}>
               <Text style={styles.separatorText}>Deskripsi</Text>
-              <Text style={styles.descText}>Ini Deskripsi</Text>
+              <Text style={styles.descText}>{dataProps.desc}</Text>
             </View>
+
+            <View style={styles.listMainView}>
+              <Text style={styles.separatorText}>Informasi Jalur</Text>
+              <ImageBackground source={Images.No_image_found} style={styles.headerImageBG}>
+
+              </ImageBackground>
+            </View>
+
 
             <View style={styles.listMainView}>
               <View style={{flexDirection:'row'}}>

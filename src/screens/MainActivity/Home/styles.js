@@ -55,29 +55,40 @@ const styles = StyleSheet.create({
   body: {
     flex: 3.7,
     flexDirection:'row',
-    backgroundColor: "#EAE2E2",
+    backgroundColor: "transparent",
     borderRadius:5,
     height: (Metrics.HEIGHT * 0.055),
-    marginTop: (Metrics.HEIGHT * 0.012)
+    marginTop: (Metrics.HEIGHT * 0.012),
+    borderColor:'#EAE2E2',
+    borderWidth: 2,
+    borderRadius:20
   },
 
   searchView:{
     justifyContent:'center',
     alignItems:'center',
     marginLeft: (Metrics.WIDTH) * 0.03,
-    backgroundColor: '#EAE2E2',
+    backgroundColor: 'transparent',
     height:30
   },
+
+  closeView:{
+    justifyContent:'center',
+    alignItems:'center',
+    marginRight: (Metrics.WIDTH) * 0.04,
+    backgroundColor: 'transparent',
+    height:30
+  },
+
   searchText:{
     flex:2,
     height:(Metrics.HEIGHT) * 0.066,
     marginLeft: (Metrics.WIDTH) * 0.02,
     fontSize: Fonts.moderateScale(15),
     fontFamily: Fonts.type.sfuiDisplayRegular,
-    color: "#c3c3c3",
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor: 'transparent',
+    color: "#616161",
+    alignSelf:'center',
+    backgroundColor: 'transparent'
   },
 
   right: {
@@ -125,7 +136,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     height: Metrics.HEIGHT * 0.27,
     width: Metrics.WIDTH * 0.7,
-    backgroundColor:"#51B252"
+    // backgroundColor:"#51B252"
   },
 
   rowMain: {
@@ -204,7 +215,8 @@ const styles = StyleSheet.create({
   // STYLE FOR SWIPER
   slidesec: {
     height: Metrics.HEIGHT * 0.3,
-    backgroundColor: Colors.transparent
+    backgroundColor: Colors.transparent,
+    marginTop: Metrics.WIDTH * 0.016
   },
 
   dot: {
@@ -234,7 +246,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: Metrics.HEIGHT * 0.3,
     width: Metrics.WIDTH,
-    backgroundColor: "grey"
+    backgroundColor: "grey",
+    borderRadius: 6,
   },
 
   contentStyle: {

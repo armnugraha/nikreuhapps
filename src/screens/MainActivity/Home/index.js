@@ -52,104 +52,120 @@ const profileImgTwo = "https://i.imgur.com/imGXHfy.png";
 export default class Home extends Component {
   constructor(props) {
     super(props);
+    // data list gunung
     const dataObjects = [
       {
         id: 1,
-        name: "Gunung Gede",
-        cardBg: { uri: cardBgOne },
-        profileImage: { uri: profileImgOne },
+        destinationName: "Gunung Gede",
+        destinationImg: { uri: cardBgOne },
         watch: "58",
         distance: "120m",
-        place:"Cianjur, Jawa Barat-2958 mdpl"
+        place:"Kab. Bogor, Jawa Barat, Indonesia",
+        altitude:"2958 mdpl",
+        desc:"Gunung Gede merupakan sebuah gunung yang berada di Pulau Jawa, Indonesia. Gunung Gede berada dalam ruang lingkup Taman Nasional Gede Pangrango, yang merupakan salah satu dari lima taman nasional yang pertama kali diumumkan di Indonesia pada tahun 1980."
       },
       {
         id: 2,
-        name: "Gunung Gede",
-        cardBg: { uri: cardBgTwo },
-        profileImage: { uri: profileImgTwo },
+        destinationName: "Gunung Guntur",
+        destinationImg: { uri: cardBgTwo },
         watch: "80",
         distance: "90km",
-        place:"Cianjur, Jawa Barat-2958 mdpl"
+        place:"Garut Jawa Barat, Indonesia",
+        altitude:"3019 mdpl",
+        desc:"Gunung Pangrango merupakan gunung tertinggi kedua di Jawa Barat setelah Gunung Ceremai. Gunung Pangrango terletak persis bersebelahan dengan Gunung Gede dan berada dalam kawasan Taman Nasional Gede Pangrango."
       },
       {
         id: 3,
-        name: "Gunung Gede",
-        cardBg: { uri: cardBgThree },
+        destinationName: "Gunung Cikuray",
+        destinationImg: { uri: cardBgThree },
         profileImage: { uri: profileImgOne },
         watch: "90",
         distance: "200m",
-        place:"Cianjur, Jawa Barat-2958 mdpl"
+        place:"Garut, Jawa Barat, Indonesia",
+        altitude:"2821 mdpl",
+        desc:"Gunung Cikuray yang mempunyai ketinggian 2.821 meter di atas permukaan laut ini tidak mempunyai kawah aktif dan merupakan gunung tertinggi keempat di Jawa Barat setelah Gunung Ciremai, Gunung Pangrango dan Gunung Gede."
       },
       {
         id: 4,
-        name: "Gunung Gede",
-        cardBg: { uri: cardBgOne },
+        destinationName: "Gunung Gede",
+        destinationImg: { uri: cardBgOne },
         profileImage: { uri: profileImgTwo },
         watch: "10",
         distance: "5km",
-        place:"Cianjur, Jawa Barat-2958 mdpl"
+        place:"Cianjur, Jawa Barat",
+        altitude:"2958 mdpl",
       },
       {
         id: 5,
-        name: "Gunung Gede",
-        cardBg: { uri: cardBgTwo },
+        destinationName: "Gunung Gede",
+        destinationImg: { uri: cardBgTwo },
         profileImage: { uri: profileImgOne },
         watch: "50",
         distance: "2km",
-        place:"Cianjur, Jawa Barat-2958 mdpl"
+        place:"Cianjur, Jawa Barat-2958 mdpl",
+        altitude:"2958 mdpl",
       }
     ];
+
     const rowHasChanged = (r1, r2) => r1 !== r2;
     const ds = new ListView.DataSource({ rowHasChanged });
 
     this.state = {
       isLoading: true,
+      isSearch:false,
+      textSearch:"",
+      titleListGunung: "List Gunung",
       dataSource: ds.cloneWithRows(dataObjects),
       selectedLots: [],
       new_collection: [
         {
           id: 1,
           image: { uri: cardBgOne },
-          title: "NEW COLLECTION",
-          description: "FOR SUMMER"
+          title: "",
+          description: ""
         },
         {
           id: 2,
           image: { uri: cardBgTwo },
-          title: "NEW COLLECTION",
-          description: "FOR SUMMER"
+          title: "",
+          description: ""
         },
         {
           id: 3,
           image: { uri: cardBgThree },
-          title: "NEW COLLECTION",
-          description: "FOR SUMMER"
+          title: "",
+          description: ""
         }
       ],
+      // data list rekomendasi
       dataList: ds.cloneWithRows([
         {
           id: 1,
-          destinationimg: { uri: cardBgOne },
-          destinationname: "Gunung Gede",
-          place:"Cianjur, Jawa Barat"
+          destinationImg: { uri: cardBgOne },
+          destinationName: "Gunung Gede",
+          place:"Cianjur, Jawa Barat",
+          desc:"Gunung Gede merupakan sebuah gunung yang berada di Pulau Jawa, Indonesia. Gunung Gede berada dalam ruang lingkup Taman Nasional Gede Pangrango, yang merupakan salah satu dari lima taman nasional yang pertama kali diumumkan di Indonesia pada tahun 1980."
         },
         {
           id: 2,
-          destinationimg: { uri: cardBgTwo },
-          destinationname: "Gunung Guntur",
-          place:"Cianjur, Jawa Barat"
+          destinationImg: { uri: cardBgTwo },
+          destinationName: "Gunung Guntur",
+          place:"Cianjur, Jawa Barat",
+          desc:"Gunung Pangrango merupakan gunung tertinggi kedua di Jawa Barat setelah Gunung Ceremai. Gunung Pangrango terletak persis bersebelahan dengan Gunung Gede dan berada dalam kawasan Taman Nasional Gede Pangrango."
         },
         {
           id: 3,
-          destinationimg: { uri: cardBgThree },
-          destinationname: "Gunung Cikuray",
-          place:"Cianjur, Jawa Barat"
+          destinationImg: { uri: cardBgThree },
+          destinationName: "Gunung Cikuray",
+          place:"Cianjur, Jawa Barat",
+          desc:"Gunung Cikuray yang mempunyai ketinggian 2.821 meter di atas permukaan laut ini tidak mempunyai kawah aktif dan merupakan gunung tertinggi keempat di Jawa Barat setelah Gunung Ciremai, Gunung Pangrango dan Gunung Gede."
         },
         {
           id: 4,
-          destinationimg: { uri: cardBgOne },
-          destinationname: "Gunung Manglayang",
-          place:"Cianjur, Jawa Barat"
+          destinationImg: { uri: cardBgOne },
+          destinationName: "Gunung Manglayang",
+          place:"Cianjur, Jawa Barat",
+          desc:''
         }
       ])
     };
@@ -192,8 +208,8 @@ export default class Home extends Component {
   //   Actions.tab_3_4();
   // };
 
-  showDetail(){
-    Actions.gunung_detail();
+  showDetail(data){
+    Actions.gunung_detail({dataProps:data});
   }
 
   _renderRow(rowData) {
@@ -211,20 +227,20 @@ export default class Home extends Component {
       <TouchableOpacity
         style={styles.listMainview}
         onPress={() =>
-          this.showDetail()
+          this.showDetail(rowData)
         }
       >
         <CachedImage
-          source={rowData.destinationimg}
+          source={rowData.destinationImg}
           style={styles.destinationimg}
         >
           <TouchableOpacity />
         </CachedImage>
         <Text style={styles.destinationnamelist}>
-          {rowData.destinationname}
+          {rowData.destinationName}
         </Text>
         {/* <Text style={styles.mexicotext}>
-          {rowData.destinationname}
+          {rowData.destinationName}
         </Text> */}
         <View style={styles.placeDistanceBg}>
           <View style={styles.mapPin}>
@@ -236,72 +252,48 @@ export default class Home extends Component {
     );
   }
 
-  render() {
-    StatusBar.setBarStyle("light-content", true);
-    if (Platform.OS === "android") {
-      StatusBar.setBackgroundColor("#2d324f", true);
-      StatusBar.setTranslucent(true);
+  searchFilter(text){
+
+    if(text == ""){
+      this.setState({isSearch: false})
+      this.setState({textSearch: null})
+      this.setState({titleListGunung: "List Gunung"})
+    }else{
+      this.setState({isSearch: true})
+      this.setState({textSearch: text})
+      this.setState({titleListGunung: "Hasil Pencarian"})
     }
 
+  }
+
+  clearFilter(){
+    this.setState({isSearch: false})
+    this.setState({textSearch: null})
+    this.setState({titleListGunung: "List Gunung"})
+  }
+
+  renderCloseSearch(){
+    
+    if(this.state.isSearch){
+      return(
+        <TouchableOpacity
+          onPress={() => this.clearFilter() }>
+          
+          <View style={styles.closeView}>
+            <Ionicons name="ios-close-circle-outline" size={18} color="#616161" />
+          </View>
+        </TouchableOpacity>
+      );
+    }else{
+      return null;
+    }
+  }
+
+  renderHeader(){
     const { new_collection } = this.state;
-
-    return (
-      <Container style={styles.main}>
-        {/* <LinearGradient
-          locations={[0.1, 0.75]}
-          colors={["#f87264", "#fa6982"]}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <Header
-            androidStatusBarColor={Colors.transparent}
-            style={styles.header}
-          >
-            <Body style={styles.body}>
-              <Title style={styles.titleTxt}>Nearby</Title>
-            </Body>
-            <Right style={styles.right}>
-              <TouchableOpacity onPress={() => this.navigateFiltyerScreen()}>
-                <Text style={styles.filterTxt}>Filter</Text>
-              </TouchableOpacity>
-            </Right>
-          </Header>
-        </LinearGradient> */}
-        <StatusBar
-     barStyle="light-content"
-   />
-        <Header style={styles.header}>
-          <Left style={styles.left}>
-            {/* <Image source={Images.ic_nikreuh} style={{height:50, width:50}} /> */}
-            <Image
-              style={{height: 40, width: 40}}
-              // source={{uri: 'main_logo_orange'}} // Don't include file extension
-              source={Images.ic_nikreuh}
-            />
-          </Left>
-          <Body style={styles.body}>
-            <View style={styles.searchView}>
-              <Ionicons name="ios-search" size={18} color="transparent" />
-            </View>
-
-            <TextInput
-              style={styles.searchText}
-              placeholder="I'm looking for..."
-              placeholderTextColor="#c3c3c3"
-              underlineColorAndroid="transparent"
-              autoCapitalize="none"
-              keyboardType="default"
-              selectionColor={"#6f6f6f"}
-            />
-          </Body>
-          {/* <Right style={styles.right}>
-            <TouchableOpacity onPress={() => alert("User Group")}>
-              <Image style={styles.userGroupIcon} source={Images.userGroup} />
-            </TouchableOpacity>
-          </Right> */}
-        </Header>
-        <Content>
-
+    if(!this.state.isSearch){
+      return(
+        <View>
           <View style={styles.slidesec}>
             <Swiper
               showsButtons={false}
@@ -335,10 +327,90 @@ export default class Home extends Component {
             renderRow={this._renderRow.bind(this)}
             enableEmptySections
             scrollEnabled={true}
+          />
+        </View>
+      );
+    }else{
+      return null;
+    }
+  }
+
+  render() {
+    StatusBar.setBarStyle("dark-content", true);
+    if (Platform.OS === "android") {
+      StatusBar.setBackgroundColor("#F4F4F4", true);
+      StatusBar.setTranslucent(true);
+    }
+
+    return (
+      <Container style={styles.main}>
+        {/* <LinearGradient
+          locations={[0.1, 0.75]}
+          colors={["#f87264", "#fa6982"]}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <Header
+            androidStatusBarColor={Colors.transparent}
+            style={styles.header}
+          >
+            <Body style={styles.body}>
+              <Title style={styles.titleTxt}>Nearby</Title>
+            </Body>
+            <Right style={styles.right}>
+              <TouchableOpacity onPress={() => this.navigateFiltyerScreen()}>
+                <Text style={styles.filterTxt}>Filter</Text>
+              </TouchableOpacity>
+            </Right>
+          </Header>
+        </LinearGradient> */}
+
+        <Header style={styles.header}>
+          <Left style={styles.left}>
+            {/* <Image source={Images.ic_nikreuh} style={{height:50, width:50}} /> */}
+            <Image
+              style={{height: 60, width: 60, justifyContent:'center', alignItems:'center', marginTop: 16}}
+              // source={{uri: 'main_logo_orange'}} // Don't include file extension
+              source={Images.main_logo_e}
+            />
+          </Left>
+          <Body style={styles.body}>
+            <View style={styles.searchView}>
+              <Ionicons name="ios-search" size={18} color="#616161" />
+            </View>
+
+            <TextInput
+              style={styles.searchText}
+              placeholder="Search gunung..."
+              placeholderTextColor="#616161"
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              keyboardType="default"
+              selectionColor={"#6f6f6f"}
+              value={this.state.textSearch}
+              onChangeText={text => this.searchFilter(text)}
             />
 
+            {this.renderCloseSearch()}
+            
+          </Body>
+          {/* <Right style={styles.right}>
+            <TouchableOpacity onPress={() => alert("User Group")}>
+              <Image style={styles.userGroupIcon} source={Images.userGroup} />
+            </TouchableOpacity>
+          </Right> */}
+        </Header>
+
+        <StatusBar barStyle="dark-content" backgroundColor="#F4F4F4"/>
+
+        <Content>
+
+          {/* Call function render slider with rekomended view */}
+
+          {this.renderHeader()}
+
           <View style={styles.titleView}>
-            <Text style={styles.titleText}>List Gunung</Text>
+            <Text style={styles.titleText}>{this.state.titleListGunung}</Text>
           </View>
 
           <ListView

@@ -88,11 +88,11 @@ export default class SignUpScreen extends Component {
 
     return (
       <Container style={styles.bgBody}>
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="dark-content" />
         
         <Content>
           <View style={styles.logosec}>
-            <Image source={Images.main_logo} style={styles.logostyle} />
+            <Image source={Images.main_logo_transparent} style={styles.logostyle} />
           </View>
           <Form style={styles.form}>
             <Item rounded style={styles.inputStyle}>

@@ -1,5 +1,7 @@
 const images = {
   main_logo: require("../Images/mainLogo.jpg"),
+  main_logo_e: require("../Images/mainLogoE.png"),
+  main_logo_transparent: require("../Images/mainLogoTransparent.png"),
   ic_nikreuh: require("../Images/ic_launcher_nikreuh.png"),
   drawer_antiquruby_logo: require("../Images/drawer_logo.png"),
   activeCategory: require("../Images/activeCategory.png"),

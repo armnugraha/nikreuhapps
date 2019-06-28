@@ -66,22 +66,6 @@ export default class SigninScreen extends React.Component {
     BackHandler.removeEventListener("hardwareBackPress", this.backPressed);
   }
 
-  componentDidMount(){
-        
-    AsyncStorage.getItem('user_id').then((token) => {         
-
-      if(token != null){
-        USERID = token
-      }
-
-      if(USERID != null){
-        this.props.navigation.navigate("MainActivityScreen")
-      }
-
-    })
-      
-  }
-
   backPressed = () => {
     return BackHandler.exitApp();
   };
@@ -136,21 +120,6 @@ export default class SigninScreen extends React.Component {
       StatusBar.setTranslucent(true);
     }
 
-    // SplashScreen
-
-    // if(!this.state.isLoading && this.state.getDataWalkThroug != "true"){
-    //   return (
-		// 		<View style={{flex: 1,flexDirection: "row",alignItems: "stretch"}}>
-		// 			<Image
-    //         style={{
-    //           flex: 1,width: null,height: null,resizeMode:"contain"
-    //         }}
-    //         source={Images.main_logo}
-    //       />
-		// 		</View>
-		// 	)
-		// }
-
     let BG_Image = {
       uri:
         "https://antiqueruby.aliansoftware.net/Images/signin/image_bg_signin_four.jpg"
@@ -158,11 +127,11 @@ export default class SigninScreen extends React.Component {
 
     return (
       <Container style={styles.bgBody}>
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="dark-content" />
         
         <Content>
           <View style={styles.logosec}>
-            <Image source={Images.main_logo} style={styles.logostyle} />
+            <Image source={Images.main_logo_transparent} style={styles.logostyle} />
           </View>
           <Form style={styles.form}>
             <Item rounded style={styles.inputStyle}>

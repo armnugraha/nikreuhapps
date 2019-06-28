@@ -46,7 +46,7 @@ export default class IntroductionScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
+
     };
   }
 
@@ -58,16 +58,6 @@ export default class IntroductionScreen extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.backPressed);
   }
 
-  componentDidMount(){
-		// this.splashScreen()
-  }
-
-  splashScreen(){
-    setTimeout(() => {
-      this.setState({isLoading:true})
-		}, 4000)
-	}
-
   backPressed = () => {
     return BackHandler.exitApp();
   };
@@ -78,24 +68,11 @@ export default class IntroductionScreen extends Component {
   }
 
   render() {
-    StatusBar.setBarStyle("light-content", true);
+    StatusBar.setBarStyle("dark-content", true);
     if (Platform.OS == "android") {
       StatusBar.setBackgroundColor("#F4F4F4", true);
       StatusBar.setTranslucent(true);
     }
-
-    // if(!this.state.isLoading){
-    //   return (
-		// 		<View style={{flex: 1,flexDirection: "row",alignItems: "stretch"}}>
-		// 			<Image
-    //         style={{
-    //           flex: 1,width: null,height: null,resizeMode:"contain"
-    //         }}
-    //         source={Images.main_logo}
-    //       />
-		// 		</View>
-		// 	)
-		// }
 
     return (
       <View style={styles.main}>
