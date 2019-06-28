@@ -46,6 +46,8 @@ const cardBg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiFnHJsE8u
 const cardBgOne = "https://i.imgur.com/6gs6CWz.png";
 const cardBgTwo = "https://i.imgur.com/f4u4lSi.jpg";
 const cardBgThree = "https://i.imgur.com/Wk274YA.jpg";
+const cardBgFour = "https://imgur.com/0fN2HJ7.png";
+const cardBgFive = "https://i.imgur.com/sAcpCvo.png";
 const profileImgOne = "https://i.imgur.com/7SHivJ1.png";
 const profileImgTwo = "https://i.imgur.com/imGXHfy.png";
 
@@ -87,23 +89,14 @@ export default class Home extends Component {
       },
       {
         id: 4,
-        destinationName: "Gunung Gede",
-        destinationImg: { uri: cardBgOne },
+        destinationName: "Gunung Ciremai",
+        destinationImg: { uri: cardBgFour },
         profileImage: { uri: profileImgTwo },
         watch: "10",
         distance: "5km",
-        place:"Cianjur, Jawa Barat",
-        altitude:"2958 mdpl",
-      },
-      {
-        id: 5,
-        destinationName: "Gunung Gede",
-        destinationImg: { uri: cardBgTwo },
-        profileImage: { uri: profileImgOne },
-        watch: "50",
-        distance: "2km",
-        place:"Cianjur, Jawa Barat-2958 mdpl",
-        altitude:"2958 mdpl",
+        place:"Jawa Barat, Indonesia",
+        altitude:"3078 mdpl",
+        desc:"Gunung Ceremai (seringkali secara salah kaprah dinamakan 'Ciremai') adalah gunung berapi kerucut yang secara administratif termasuk dalam wilayah dua kabupaten, yakni Kabupaten Kuningan dan Kabupaten Majalengka."
       }
     ];
 
@@ -143,46 +136,45 @@ export default class Home extends Component {
           id: 1,
           destinationImg: { uri: cardBgOne },
           destinationName: "Gunung Gede",
-          place:"Cianjur, Jawa Barat",
+          place:"Kab. Bogor, Jawa Barat",
           desc:"Gunung Gede merupakan sebuah gunung yang berada di Pulau Jawa, Indonesia. Gunung Gede berada dalam ruang lingkup Taman Nasional Gede Pangrango, yang merupakan salah satu dari lima taman nasional yang pertama kali diumumkan di Indonesia pada tahun 1980."
         },
         {
           id: 2,
           destinationImg: { uri: cardBgTwo },
           destinationName: "Gunung Guntur",
-          place:"Cianjur, Jawa Barat",
+          place:"Garut, Jawa Barat",
           desc:"Gunung Pangrango merupakan gunung tertinggi kedua di Jawa Barat setelah Gunung Ceremai. Gunung Pangrango terletak persis bersebelahan dengan Gunung Gede dan berada dalam kawasan Taman Nasional Gede Pangrango."
         },
         {
           id: 3,
           destinationImg: { uri: cardBgThree },
           destinationName: "Gunung Cikuray",
-          place:"Cianjur, Jawa Barat",
+          place:"Garut, Jawa Barat",
           desc:"Gunung Cikuray yang mempunyai ketinggian 2.821 meter di atas permukaan laut ini tidak mempunyai kawah aktif dan merupakan gunung tertinggi keempat di Jawa Barat setelah Gunung Ciremai, Gunung Pangrango dan Gunung Gede."
         },
         {
           id: 4,
-          destinationImg: { uri: cardBgOne },
-          destinationName: "Gunung Manglayang",
-          place:"Cianjur, Jawa Barat",
-          desc:''
+          destinationImg: { uri: cardBgFive },
+          destinationName: "Gunung Malabar",
+          place:"Jawa Barat, Indonesia",
+          desc:'Gunung Malabar merupakan sebuah gunung api yang terdapat di Banjaran, Kabupaten Bandung, Jawa Barat dengan titik tertinggi 2,343 meter di atas permukaan laut. Malabar merupakan salah satu puncak yang dimiliki Pegunungan Malabar. Beberapa puncak yang lain adalah Puncak Mega, Puncak Puntang, dan Puncak Haruman.'
         }
       ])
     };
   }
 
   componentWillMount() {
-    // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentWillUnmount() {
-    // BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  // handleBackPress = () => {
-  //   this.props.navigation.navigate("Login");
-  //   return true;
-  // };
+  handleBackPress = () => {
+    return BackHandler.exitApp();
+  };
 
   componentDidMount(){
     Api.get('questions/coba').then(resp =>{
