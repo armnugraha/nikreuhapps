@@ -518,7 +518,20 @@ mainImgDetail: {
     textAlign:"center",
       fontSize: Fonts.moderateScale(18),
         fontFamily: Fonts.type.sfuiDisplayRegular,
-  }
+  },
+
+  offlineContainer: {
+    backgroundColor: '#b52424',
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: "100%",
+    position: 'absolute',
+	top: 24,
+	zIndex:1
+  },
+  offlineText: { color: '#fff' }
 
 });
 

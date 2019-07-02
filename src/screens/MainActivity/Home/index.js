@@ -9,7 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ListView,
-  AsyncStorage,
+  NetInfo,
   I18nManager,
   BackHandler,
   TextInput
@@ -110,6 +110,7 @@ export default class Home extends Component {
       titleListGunung: "List Gunung",
       dataSource: ds.cloneWithRows(dataObjects),
       selectedLots: [],
+      isConnected: true,
       new_collection: [
         {
           id: 1,
@@ -170,6 +171,7 @@ export default class Home extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
   }
 
   handleBackPress = () => {
@@ -177,9 +179,31 @@ export default class Home extends Component {
   };
 
   componentDidMount(){
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+
     Api.get('questions/coba').then(resp =>{
         // alert(JSON.stringify(resp))
     });
+  }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected: true });
+    } else {
+      this.setState({ isConnected: false });
+    }
+  };
+
+  viewConnection(){
+
+    if (!this.state.isConnected) {
+      return(
+        <View style={styles.offlineContainer}>
+          <Text style={styles.offlineText}>No Internet Connection</Text>
+        </View>
+      )
+    }
+
   }
 
   // onLearnMore = (name, watch, distance) => {
@@ -395,8 +419,9 @@ export default class Home extends Component {
 
         <StatusBar barStyle="dark-content" backgroundColor="#F4F4F4"/>
 
-        <Content>
+        {this.viewConnection()}
 
+        <Content>
           {/* Call function render slider with rekomended view */}
 
           {this.renderHeader()}

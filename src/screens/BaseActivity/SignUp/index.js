@@ -7,7 +7,7 @@ import {
   I18nManager,
   TextInput,
   TouchableOpacity,
-  ScrollView,
+  NetInfo,
   BackHandler,
   Image,
   ToastAndroid
@@ -28,17 +28,34 @@ export default class SignUpScreen extends Component {
       email: "",
       gender: "Female",
       ActionToSignin: "SigninScreen",
-      ActionToSignup: "SignUpScreen"
+      ActionToSignup: "SignUpScreen",
+      isConnected: true
     };
   }
 
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+  }
+
   componentWillMount() {
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+
     BackHandler.addEventListener("hardwareBackPress", this.backPressed);
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.backPressed);
+
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
   }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
 
   backPressed = () => {
     this.props.navigation.navigate(this.state.ActionToSignin);
@@ -80,6 +97,18 @@ export default class SignUpScreen extends Component {
 
   }
 
+  viewConnection(){
+
+    if (!this.state.isConnected) {
+      return(
+        <View style={styles.offlineContainer}>
+          <Text style={styles.offlineText}>No Internet Connection</Text>
+        </View>
+      )
+    }
+
+  }
+
   render() {
     if (Platform.OS === "android") {
       StatusBar.setBackgroundColor("#F4F4F4", true);
@@ -90,6 +119,8 @@ export default class SignUpScreen extends Component {
       <Container style={styles.bgBody}>
         <StatusBar barStyle="dark-content" />
         
+        {this.viewConnection()}
+
         <Content>
           <View style={styles.logosec}>
             <Image source={Images.main_logo_transparent} style={styles.logostyle} />

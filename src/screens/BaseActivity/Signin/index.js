@@ -46,7 +46,12 @@ export default class SigninScreen extends React.Component {
       emailText:'',
       passwordText:'',
       getDataWalkThroug:null,
+      isConnected: true
     };
+  }
+
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
   }
 
   componentWillMount() {
@@ -64,7 +69,17 @@ export default class SigninScreen extends React.Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.backPressed);
+
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
   }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
 
   backPressed = () => {
     return BackHandler.exitApp();
@@ -72,34 +87,44 @@ export default class SigninScreen extends React.Component {
 
   login(email, password){
 
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!this.state.isConnected) {
 
-    if (email != "" && password != "") {
+      ToastAndroid.show('Harap periksa koneksi terlebih dahulu', ToastAndroid.SHORT)
 
-      if (email.match(mailformat)) {
-        this.props.navigation.navigate("MainActivityScreen")
+    }else{
 
-        let USERID = 1;
-        let USERNAME = "Arman";
-        let EMAIL = this.state.emailText;
-        AsyncStorage.setItem('user_id', JSON.stringify(USERID));
-        AsyncStorage.setItem('user_name', USERNAME);
-        AsyncStorage.setItem('email', EMAIL);
+      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+      if (email != "" && password != "") {
+
+        if (email.match(mailformat)) {
+          this.props.navigation.navigate("MainActivityScreen")
+
+          let USERID = 1;
+          let USERNAME = "Arman";
+          let EMAIL = this.state.emailText;
+          AsyncStorage.setItem('user_id', JSON.stringify(USERID));
+          AsyncStorage.setItem('user_name', USERNAME);
+          AsyncStorage.setItem('email', EMAIL);
+
+        } else {
+          ToastAndroid.show('Inputan email tidak valid', ToastAndroid.SHORT)
+          // Toast.show({
+          //   text: "Please enter valid email.",
+          //   duration:2000,
+          //   type: "danger"
+          // });
+        }
 
       } else {
-        ToastAndroid.show('Inputan email tidak valid', ToastAndroid.SHORT)
-        // Toast.show({
-        //   text: "Please enter valid email.",
-        //   duration:2000,
-        //   type: "danger"
-        // });
+        
+        if (email == "" || password == '') {
+          ToastAndroid.show('Inputan tidak boleh kosong', ToastAndroid.SHORT)
+          return;
+        }
+
       }
 
-    } else {
-      if (email == "" || password == '') {
-        ToastAndroid.show('Inputan tidak boleh kosong', ToastAndroid.SHORT)
-        return;
-      }
     }
 
   }
@@ -108,7 +133,19 @@ export default class SigninScreen extends React.Component {
     setTimeout(() => {
       this.setState({isLoading:true})
 		}, 4000)
-	}
+  }
+  
+  viewConnection(){
+
+    if (!this.state.isConnected) {
+      return(
+        <View style={styles.offlineContainer}>
+          <Text style={styles.offlineText}>No Internet Connection</Text>
+        </View>
+      )
+    }
+
+  }
 
   render() {
 
@@ -129,6 +166,8 @@ export default class SigninScreen extends React.Component {
       <Container style={styles.bgBody}>
         <StatusBar barStyle="dark-content" />
         
+        {this.viewConnection()}
+
         <Content>
           <View style={styles.logosec}>
             <Image source={Images.main_logo_transparent} style={styles.logostyle} />

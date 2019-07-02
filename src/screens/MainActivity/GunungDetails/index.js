@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StatusBar, Platform, ImageBackground,Dimensions,TouchableOpacity, ListView, ScrollView, BackHandler, I18nManager, Modal, Linking} from 'react-native';
+import { Text, View, Image, StatusBar, Platform, ImageBackground,Dimensions,TouchableOpacity, ListView, ScrollView, BackHandler, I18nManager, Modal, Linking, NetInfo} from 'react-native';
 import { Container, Button, Icon, Right, Item, Input, Header, Footer, FooterTab, Left, Body, Title, Content, Form, Label} from 'native-base';
 // Screen Styles
 import styles from './styles';
@@ -36,15 +36,29 @@ export default class ProfileNewsFeedThree extends Component {
       renderHeader: false,
 		  renderList: false,
       renderFooter: false,
-      modalVisible: false
+      modalVisible: false,
+      isConnected: true
     };
   }
 
   componentDidMount() {
 		setTimeout(() => {this.setState({renderHeader: true})}, 0);
 		setTimeout(() => {this.setState({renderList: true})}, 0);
-		setTimeout(() => {this.setState({renderFooter: true})}, 0);
+    setTimeout(() => {this.setState({renderFooter: true})}, 0);
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
   }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+  }
+
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
 
   showImage(index) {
     // Actions.gunung_detail_image();
@@ -58,6 +72,18 @@ export default class ProfileNewsFeedThree extends Component {
   modalClose(){
     StatusBar.setHidden(false);
     this.setState({ modalVisible: false })
+  }
+
+  viewConnection(){
+
+    if (!this.state.isConnected) {
+      return(
+        <View style={styles.offlineContainer}>
+          <Text style={styles.offlineText}>No Internet Connection</Text>
+        </View>
+      )
+    }
+
   }
 
   render(){
@@ -134,6 +160,9 @@ export default class ProfileNewsFeedThree extends Component {
     return(
      <Container style={styles.main}>
        <StatusBar barStyle="light-content" />
+
+       {this.viewConnection()}
+
        <Content>
         {
           renderHeader &&

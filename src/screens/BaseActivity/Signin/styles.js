@@ -185,6 +185,18 @@ const styles = StyleSheet.create({
     fontSize: Fonts.moderateScale(16),
     fontFamily: Fonts.type.sfuiDisplayRegular,
     color: "#969696"
-  }
+  },
+  offlineContainer: {
+    backgroundColor: '#b52424',
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: "100%",
+    position: 'absolute',
+    top: 30
+  },
+  offlineText: { color: '#fff' }
+
 });
 export default styles;

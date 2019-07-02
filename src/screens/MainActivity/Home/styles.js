@@ -355,7 +355,20 @@ const styles = StyleSheet.create({
     color: "#e63575",
     paddingLeft: Metrics.HEIGHT * 0.01,
     paddingTop: Metrics.HEIGHT * 0.004
-  }
+  },
+
+  offlineContainer: {
+    backgroundColor: '#b52424',
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: "100%",
+    position: 'absolute',
+    top: 64,
+    zIndex:1
+  },
+  offlineText: { color: '#fff' }
 });
 
 export default styles;
