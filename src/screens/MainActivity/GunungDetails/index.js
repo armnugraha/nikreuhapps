@@ -184,7 +184,7 @@ export default class ProfileNewsFeedThree extends Component {
         {
           renderHeader &&
           <View>
-            <ImageBackground source={dataProps.img} style={styles.headerImageBG}>
+            <ImageBackground source={{ uri:dataProps.img}} style={styles.headerImageBG}>
               <Header style={styles.header}>
                   <Left style={styles.left}>
                     <TouchableOpacity style={styles.backArrow}  onPress={()=>Actions.pop()}>

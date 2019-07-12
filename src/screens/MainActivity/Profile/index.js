@@ -38,7 +38,7 @@ import { withNavigation } from 'react-navigation';
 const bgImage =
   "https://antiqueruby.aliansoftware.net//Images/profile/image_bg_profile_nine.jpg";
 const profileImg =
-  "https://antiqueruby.aliansoftware.net//Images/profile/user_image_p08.png";
+  "https://antiqueruby.aliansoftware.net//Images/profile/card_propic_18_02.png";
 const profileImageTwo =
   "https://antiqueruby.aliansoftware.net//Images/profile/card_propic_02_p11.png";
 const profileImageThree =

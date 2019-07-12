@@ -61,7 +61,7 @@ export default class ListItemData extends Component {
       >
         <View style={{backgroundColor:"#FFF", borderRadius: 8}}>
         <CachedImage
-          source={img}
+          source={{uri: img}}
           style={styles.destinationimg}
         >
           <TouchableOpacity />
