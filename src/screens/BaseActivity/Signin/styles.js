@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     borderRadius: 40,
     width: Metrics.WIDTH * 0.8,
-    backgroundColor: "#E2E2E2"
+    backgroundColor: "#E2E2E2",
+    color:"#616161"
   },
   signInbtn: {
     backgroundColor: "#51B252",

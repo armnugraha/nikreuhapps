@@ -84,7 +84,7 @@ imageStyle: {
 	height: (Metrics.HEIGHT * 0.08),
 	// borderRadius: (Metrics.HEIGHT * 0.03),
 	marginRight: (Metrics.WIDTH * 0.04),
-	// resizeMode: 'cover',
+	resizeMode: 'cover',
 	...Platform.select({
 		ios: {
 		backgroundColor: 'gray'

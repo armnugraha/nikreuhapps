@@ -40,7 +40,9 @@ import DetailImage from "./GunungDetails/DetailImage";
 import Kosong from "./kosong";
 import SignUpScreen from "../BaseActivity/SignUp";
 import ProfileEditScreen from "./ProfileEdit";
-import AdminScreen from "./index_admin";
+import PengelolaScreen from "./Pengelola";
+import PengelolaEditScreen from "./PengelolaEdit";
+import Example from ".";
 
 const styles = StyleSheet.create({
   container: {
@@ -95,7 +97,7 @@ const onBackPress = () => {
   // return true;
 };
 
-export default class Example extends Component {
+export default class AdminScreen extends Component {
   componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -161,6 +163,10 @@ export default class Example extends Component {
                 <Scene key="profile_edit" component={ProfileEditScreen} hideNavBar/>
 
                 <Scene key="tab_3_2" component={Filter} hideNavBar />
+                
+                <Scene key="pengelola_screen" component={PengelolaScreen} hideNavBar/>
+                <Scene key="pengelola_edit_screen" component={PengelolaEditScreen} hideNavBar/>
+
                 <Scene key="kos" component={Kosong} hideNavBar />
                 {/* <Scene key="tab_3_3" component={DiscoveryDetails} hideNavBar /> */}
 
@@ -202,17 +208,18 @@ export default class Example extends Component {
 
                     {/* <Stack key="tab_2" title="Message" icon={TabIcon}>
                       <Scene key="tab_2_1" component={Message} hideNavBar />
-                    </Stack>
+                    </Stack> */}
 
-                    <Stack key="tab_3" title="Discovery" icon={TabIcon}>
+                    <Stack key="tab_3" title="Pengelola" icon={TabIcon}>
                       <Scene
                         key="tab_3_1"
-                        component={Discovery}
-                        title="Discovery"
+                        component={PengelolaScreen}
+                        title="Pengelola"
                         icon={TabIcon}
                         hideNavBar
                       />
-                    </Stack> */}
+                    </Stack>
+
                     <Stack key="tab_4" title="Navigation" icon={TabIcon}>
                       <Scene
                         key="tab_4_1"

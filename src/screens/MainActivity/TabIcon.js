@@ -38,8 +38,8 @@ const TabIcon = props => {
             styles.tabIcon
           ]}
         /> */}
-        <FontAwesome name="home" size={16} color={props.focused ? "#59c264" : "grey"} />
-        <Text
+        <FontAwesome name="home" size={32} color={props.focused ? "#59c264" : "#CCCCCC"} />
+        {/* <Text
           style={{
             color: props.focused ? "#59c264" : "grey",
             marginTop: Metrics.WIDTH * 0.008,
@@ -47,7 +47,7 @@ const TabIcon = props => {
           }}
         >
           {props.title}
-        </Text>
+        </Text> */}
       </View>
     );
   } 
@@ -72,47 +72,39 @@ const TabIcon = props => {
   //       </Text>
   //     </View>
   //   );
-  // } else if (props.title == "Discovery") {
-  //   myTabIcon.push(
-  //     <View key={3} style={styles.tabItemBg}>
-  //       <Image
-  //         source={
-  //           props.focused ? Images.discoveryActiveIcon : Images.discoveryIcon
-  //         }
-  //         style={{
-  //           height: Metrics.WIDTH * 0.045,
-  //           width: Metrics.WIDTH * 0.045,
-  //           justifyContent: "center",
-  //           resizeMode: "contain"
-  //         }}
-  //       />
-  //       <Text
-  //         style={{
-  //           color: props.focused ? "#ff7354" : "grey",
-  //           marginTop: Metrics.WIDTH * 0.008,
-  //           fontSize: Fonts.moderateScale(13)
-  //         }}
-  //       >
-  //         {props.title}
-  //       </Text>
-  //     </View>
-  //   );
   // } 
-  else if (props.title == "Favorite") {
+  else if (props.title == "Pengelola") {
     myTabIcon.push(
       <View key={3} style={styles.tabItemBg}>
         <Image
           source={
-            props.focused ? Images.favouriteActiveIcon : Images.favouriteIcon
+            props.focused ? Images.ic_mountain : Images.ic_mountain_transparent
           }
           style={{
-            height: Metrics.WIDTH * 0.046,
-            width: Metrics.WIDTH * 0.046,
+            // height: Metrics.WIDTH * 0.045,
+            // width: Metrics.WIDTH * 0.045,
             justifyContent: "center",
             resizeMode: "contain"
           }}
         />
-        <Text
+        {/* <FontAwesome name="fa-mountain" size={32} color={props.focused ? "#59c264" : "#CCCCCC"} /> */}
+        {/* <Text
+          style={{
+            color: props.focused ? "#ff7354" : "grey",
+            marginTop: Metrics.WIDTH * 0.008,
+            fontSize: Fonts.moderateScale(13)
+          }}
+        >
+          {props.title}
+        </Text> */}
+      </View>
+    );
+  } 
+  else if (props.title == "Navigation") {
+    myTabIcon.push(
+      <View key={3} style={styles.tabItemBg}>
+        <FontAwesome name="location-arrow" size={32} color={props.focused ? "#59c264" : "#CCCCCC"} />
+        {/* <Text
           style={{
             color: props.focused ? "#59c264" : "grey",
             marginTop: Metrics.WIDTH * 0.008,
@@ -120,22 +112,14 @@ const TabIcon = props => {
           }}
         >
           {props.title}
-        </Text>
+        </Text> */}
       </View>
     );
   } else if (props.title == "Profile") {
     myTabIcon.push(
       <View key={3} style={styles.tabItemBg}>
-        <Image
-          source={props.focused ? Images.profileActiveIcon : Images.profileIcon}
-          style={{
-            height: Metrics.WIDTH * 0.045,
-            width: Metrics.WIDTH * 0.045,
-            justifyContent: "center",
-            resizeMode: "contain"
-          }}
-        />
-        <Text
+        <FontAwesome name="user-circle" size={32} color={props.focused ? "#59c264" : "#CCCCCC"} />
+        {/* <Text
           style={{
             color: props.focused ? "#59c264" : "grey",
             marginTop: Metrics.WIDTH * 0.008,
@@ -143,7 +127,7 @@ const TabIcon = props => {
           }}
         >
           {props.title}
-        </Text>
+        </Text> */}
       </View>
     );
   } else {

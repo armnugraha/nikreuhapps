@@ -15,6 +15,7 @@ const { width, height } = Dimensions.get("window");
 
 import WalkThroughScreen from "../screens/BaseActivity/walkthrough/index";
 import MainActivity from '../screens/MainActivity/index';
+import AdminMainActivity from '../screens/MainActivity/index_admin';
 import Index from '../screens/BaseActivity/index';
 import Signin from '../screens/BaseActivity/Signin/index';
 import Signup from '../screens/BaseActivity/SignUp/index';
@@ -38,11 +39,12 @@ const MainStackBubbdy = createStackNavigator(
 const WalkThroughInclLogin =
 	createStackNavigator(
 		{
-		  WalkThroughScreen: { screen: WalkThroughScreen },
-		  SigninScreen: { screen: Signin },
-		  SignUpScreen: { screen: Signup },
+		  	WalkThroughScreen: { screen: WalkThroughScreen },
+		  	SigninScreen: { screen: Signin },
+		  	SignUpScreen: { screen: Signup },
 			Index: { screen: Index },
-			MainActivityScreen: { screen: MainActivity}
+			MainActivityScreen: { screen: MainActivity},
+			AdminMainActivity: { screen: AdminMainActivity}
 		},
 		{
 		  headerMode: "none",

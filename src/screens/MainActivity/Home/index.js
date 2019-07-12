@@ -5,12 +5,12 @@ import {
   Image,
   StatusBar,
   Platform,
-  ImageBackground,
-  Dimensions,
+  FlatList,
+  ActivityIndicator,
   TouchableOpacity,
   ListView,
   NetInfo,
-  I18nManager,
+  ToastAndroid,
   BackHandler,
   TextInput
 } from "react-native";
@@ -37,6 +37,7 @@ import Stars from 'react-native-stars';
 import Api from '../../../libs/Api';
 import { CachedImage } from "react-native-cached-image";
 
+import ListItemData from './ListItemData';
 import ListItemRekomendasi from './ListItemRekomendasi';
 
 // Screen Styles
@@ -100,6 +101,34 @@ export default class Home extends Component {
       }
     ];
 
+    // data list filter
+    const dataFilterObjects = [
+      {
+        id: 1,
+        name: "Terdekat",
+        color:["#F37935", "#C834C2"],
+        route:"/near"
+      },
+      {
+        id: 2,
+        name: "Terpopuler",
+        color:["#3598F3", "#891E85"],
+        route:"/popular"
+      },
+      {
+        id: 3,
+        name: "Termudah",
+        color:["#24CDB9", "#3516B0"],
+        route:"/easiest"
+      },
+      {
+        id: 4,
+        name: "7 Summit",
+        color:["#31CD24", "#B522DA"],
+        route:"/seven"
+      }
+    ];
+
     const rowHasChanged = (r1, r2) => r1 !== r2;
     const ds = new ListView.DataSource({ rowHasChanged });
 
@@ -109,6 +138,7 @@ export default class Home extends Component {
       textSearch:"",
       titleListGunung: "List Gunung",
       dataSource: ds.cloneWithRows(dataObjects),
+      dataSourceFilter: ds.cloneWithRows(dataFilterObjects),
       selectedLots: [],
       isConnected: true,
       new_collection: [
@@ -161,12 +191,26 @@ export default class Home extends Component {
           place:"Jawa Barat, Indonesia",
           desc:'Gunung Malabar merupakan sebuah gunung api yang terdapat di Banjaran, Kabupaten Bandung, Jawa Barat dengan titik tertinggi 2,343 meter di atas permukaan laut. Malabar merupakan salah satu puncak yang dimiliki Pegunungan Malabar. Beberapa puncak yang lain adalah Puncak Mega, Puncak Puntang, dan Puncak Haruman.'
         }
-      ])
+      ]),
+      dataCon: [{
+        "near": [
+            {
+                "_id": "5d20796431045d2cf74f9306",
+                "name": "Gunung Ceremai (Via Apuy)",
+                "address": "Jawa Barat, Indonesia",
+                "altitude": 3078,
+            }
+        ]}],
+      dataNear: [],
+      dataListSource: [],
+      loading:false,
     };
   }
 
   componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+
+    this.fetchNear();
   }
 
   componentWillUnmount() {
@@ -179,10 +223,45 @@ export default class Home extends Component {
   };
 
   componentDidMount(){
+
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
 
-    Api.get('questions/coba').then(resp =>{
-        // alert(JSON.stringify(resp))
+    // let params = {
+    //   username: "arman",
+    //   password: "1234",
+    // };
+
+    // let text = 'Arm.anasdsad.Nugraha';
+    // var array = text.split(".",2);
+    // var sets = array[1]
+    // alert(sets)
+
+    // Api.post('/auth', params).then(resp =>{
+    //   alert(JSON.stringify(resp))
+    // });
+
+  }
+
+  fetchNear(){
+    Api.get('/near').then(resp =>{
+      this.setState({dataListSource: resp})
+    })
+    .catch(error =>{
+      ToastAndroid.show("'"+error+"'", ToastAndroid.SHORT)
+    });
+  }
+
+  fetchFilter(route){
+
+    this.setState({loading: true})
+
+    Api.get(route).then(resp =>{
+      this.setState({dataListSource: resp})
+      this.setState({loading: false})
+    })
+    .catch(error =>{
+      ToastAndroid.show("'"+error+"'", ToastAndroid.SHORT)
+      this.setState({loading: false})
     });
   }
 
@@ -236,6 +315,33 @@ export default class Home extends Component {
     );
   }
 
+  _renderFilterRow(rowData) {
+    return (      
+      <View style={styles.rowMainFilter}>
+        <TouchableOpacity
+          style={styles.cardFilter}
+          onPress={() =>
+            this.fetchFilter(rowData.route)
+          }
+        >
+        
+        <LinearGradient
+          locations={[0.1, 0.75]}
+          colors={rowData.color}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 1.5, y: 1 }}
+          style={styles.cardFilterBg}
+        >
+          <View style={styles.filterDetailBg}>
+            <Text style={styles.nameFilterTxt}>{rowData.name}</Text>
+          </View>
+          </LinearGradient>
+        </TouchableOpacity>
+
+      </View>
+    );
+  }
+
   _renderList(rowData) {
     var that = this;
 
@@ -246,24 +352,24 @@ export default class Home extends Component {
           this.showDetail(rowData)
         }
       >
-        <CachedImage
+        {/* <CachedImage
           source={rowData.destinationImg}
           style={styles.destinationimg}
         >
           <TouchableOpacity />
-        </CachedImage>
+        </CachedImage> */}
         <Text style={styles.destinationnamelist}>
-          {rowData.destinationName}
+          {rowData.name}
         </Text>
         {/* <Text style={styles.mexicotext}>
           {rowData.destinationName}
         </Text> */}
-        <View style={styles.placeDistanceBg}>
+        {/* <View style={styles.placeDistanceBg}>
           <View style={styles.mapPin}>
             <FontAwesome name="map-marker" size={12} color="#b7b7b7" />
           </View>
           <Text style={styles.placeDistanceTxt}>{rowData.place}</Text>
-        </View>
+        </View> */}
       </TouchableOpacity>
     );
   }
@@ -332,7 +438,7 @@ export default class Home extends Component {
             </Swiper>
           </View>
 
-          <View style={styles.titleView}>
+          {/* <View style={styles.titleView}>
             <Text style={styles.titleText}>Rekomendasi Gunung</Text>
           </View>
 
@@ -343,11 +449,28 @@ export default class Home extends Component {
             renderRow={this._renderRow.bind(this)}
             enableEmptySections
             scrollEnabled={true}
+          /> */}
+
+          <ListView
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            dataSource={this.state.dataSourceFilter}
+            renderRow={this._renderFilterRow.bind(this)}
+            enableEmptySections
+            scrollEnabled={true}
           />
         </View>
       );
     }else{
       return null;
+    }
+  }
+
+  loadingView(){
+    if(this.state.loading){
+      return(
+        <ActivityIndicator style={{zIndex:1}} />
+      )
     }
   }
 
@@ -382,15 +505,13 @@ export default class Home extends Component {
         </LinearGradient> */}
 
         <Header style={styles.header}>
-          <Left style={styles.left}>
+          <Left style={styles.body}>
             {/* <Image source={Images.ic_nikreuh} style={{height:50, width:50}} /> */}
-            <Image
+            {/* <Image
               style={{height: 60, width: 60, justifyContent:'center', alignItems:'center', marginTop: 16}}
               // source={{uri: 'main_logo_orange'}} // Don't include file extension
               source={Images.main_logo_e}
-            />
-          </Left>
-          <Body style={styles.body}>
+            /> */}
             <View style={styles.searchView}>
               <Ionicons name="ios-search" size={18} color="#616161" />
             </View>
@@ -408,7 +529,9 @@ export default class Home extends Component {
             />
 
             {this.renderCloseSearch()}
-            
+          </Left>
+          <Body style={styles.left}>
+
           </Body>
           {/* <Right style={styles.right}>
             <TouchableOpacity onPress={() => alert("User Group")}>
@@ -421,21 +544,38 @@ export default class Home extends Component {
 
         {this.viewConnection()}
 
-        <Content>
+        <Content style={{backgroundColor:"#F4F4F4"}}>
           {/* Call function render slider with rekomended view */}
 
           {this.renderHeader()}
 
-          <View style={styles.titleView}>
+          {/* <View style={styles.titleView}>
             <Text style={styles.titleText}>{this.state.titleListGunung}</Text>
-          </View>
+          </View> */}
 
-          <ListView
+          {/* <ListView
             contentContainerStyle={styles.listContent}
             dataSource={this.state.dataList}
             renderRow={this._renderList.bind(this)}
             enableEmptySections
             pageSize={4}
+          /> */}
+
+          {this.loadingView()}
+
+          <FlatList
+            data={this.state.dataListSource}
+            numColumns={2}
+            style={styles.listContent}
+            renderItem = {({item, index}) => (
+                <ListItemData
+                  {...item}
+                  cek = "Haha"
+                />
+              )            
+            }
+
+            keyExtractor = {(item, index) => index.toString()}
           />
 
         </Content>

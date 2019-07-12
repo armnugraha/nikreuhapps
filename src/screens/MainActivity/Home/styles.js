@@ -139,6 +139,24 @@ const styles = StyleSheet.create({
     // backgroundColor:"#51B252"
   },
 
+  rowMainFilter: {
+    marginHorizontal: Metrics.WIDTH * 0.002,
+    marginLeft: Metrics.WIDTH * 0.032,
+    marginTop: Metrics.HEIGHT * 0.032
+  },
+
+  cardFilter: {
+    borderRadius: 6,
+    height: Metrics.HEIGHT * 0.08,
+    width: Metrics.WIDTH * 0.24,
+  },
+
+  cardFilterBg: {
+    borderRadius: 6,
+    height: Metrics.HEIGHT * 0.08,
+    width: Metrics.WIDTH * 0.24
+  },
+
   rowMain: {
     marginHorizontal: Metrics.WIDTH * 0.05,
     // marginTop: Metrics.HEIGHT * 0.1
@@ -164,6 +182,18 @@ const styles = StyleSheet.create({
     color: Colors.snow,
     fontFamily: Fonts.type.sfuiDisplayRegular,
     backgroundColor: Colors.transparent
+  },
+
+  nameFilterTxt: {
+    fontSize: Fonts.moderateScale(12),
+    color: Colors.snow,
+    fontFamily: Fonts.type.sfuiDisplayRegular,
+    backgroundColor: Colors.transparent,
+    justifyContent:"center",
+    alignContent:"center",
+    alignSelf:"center",
+    alignItems:"center",
+    textAlign:"center"
   },
 
   watchIcon: {
@@ -201,6 +231,13 @@ const styles = StyleSheet.create({
     marginLeft: Metrics.WIDTH * 0.03
   },
 
+  filterDetailBg: {
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
   watchDistanceBg: {
     flexDirection: "row"
   },
@@ -220,7 +257,7 @@ const styles = StyleSheet.create({
   },
 
   dot: {
-    backgroundColor: "#d4d4d4",
+    backgroundColor: "#E2E2E2",
     width: Metrics.WIDTH * 0.02,
     height: Metrics.WIDTH * 0.02,
     borderRadius: Metrics.WIDTH * 0.01,
@@ -229,7 +266,7 @@ const styles = StyleSheet.create({
   },
 
   activeDot: {
-    backgroundColor: "#0691ce",
+    backgroundColor: "#EE7734",
     width: Metrics.WIDTH * 0.02,
     height: Metrics.WIDTH * 0.02,
     borderRadius: Metrics.WIDTH * 0.01,
@@ -246,8 +283,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: Metrics.HEIGHT * 0.3,
     width: Metrics.WIDTH,
-    backgroundColor: "grey",
-    borderRadius: 6,
+    backgroundColor: "grey"
   },
 
   contentStyle: {
@@ -281,12 +317,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     marginVertical: Metrics.HEIGHT * 0.014,
-    alignItems: "flex-start",
-    alignContent: "flex-start",
-    justifyContent: "space-between",
+    // alignItems: "flex-start",
+    // alignContent: "flex-start",
+    // justifyContent: "space-between",
     // backgroundColor: "#fafafa",
     paddingBottom: Metrics.HEIGHT * 0.02,
-    marginLeft: Metrics.HEIGHT * 0.01,
+    marginLeft: Metrics.HEIGHT * 0.002,
     marginRight: Metrics.HEIGHT * 0.01
   },
 
@@ -297,23 +333,26 @@ const styles = StyleSheet.create({
         width: Metrics.WIDTH * 0.47
       },
       android: {
-        height: Metrics.HEIGHT * 0.382,
-        width: Metrics.WIDTH * 0.47
+        height: Metrics.HEIGHT * 0.392,
+        width: Metrics.WIDTH * 0.485,
+        paddingLeft: Metrics.HEIGHT * 0.014
       }
     }),
-    backgroundColor: "#fff",
-    borderRadius: Metrics.HEIGHT * 0.005,
-    marginBottom: Metrics.HEIGHT * 0.015,
-    shadowColor: "gray",
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
-    borderColor: "#bec1c2"
+    // backgroundColor: "#fff",
+    borderRadius: Metrics.HEIGHT * 0.008,
+    // marginBottom: Metrics.HEIGHT * 0.015,
+    // shadowColor: "gray",
+    // shadowOffset: { width: 2, height: 2 },
+    // shadowOpacity: 0.3,
+    // shadowRadius: 5,
+    // elevation: 5,
+    borderWidth:1,
+    borderColor:"transparent"
+    // borderColor: "#bec1c2"
   },
 
   destinationimg: {
-    width: Metrics.WIDTH * 0.47,
+    // width: Metrics.WIDTH * 0.47,
     ...Platform.select({
       ios: {
         height: Metrics.HEIGHT * 0.27,
@@ -321,8 +360,10 @@ const styles = StyleSheet.create({
       },
       android: {
         height: Metrics.HEIGHT * 0.3,
-        borderTopLeftRadius: 2,
-        borderTopRightRadius: 2
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
+        // borderWidth:1,
+        borderColor:"transparent"
       }
     })
   },
@@ -346,7 +387,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.type.sfuiDisplayRegular,
     backgroundColor: Colors.transparent,
     marginLeft: Metrics.WIDTH * 0.008,
-    marginTop: Metrics.WIDTH * 0.01
+    marginTop: Metrics.WIDTH * 0.01,
+    marginRight: Metrics.WIDTH * 0.024,
   },
 
   mexicotext: {

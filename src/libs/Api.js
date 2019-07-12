@@ -1,7 +1,7 @@
 class Api {
 
     // DEV API
-    static host = 'http://private-43135-nikreuhapps.apiary-mock.com/';
+    static host = 'http://167.205.44.60:3000';
     // PROD API
     // static host = 'https://api.envisions.app/api/';
 

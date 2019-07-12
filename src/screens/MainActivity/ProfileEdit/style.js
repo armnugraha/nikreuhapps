@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   bgBody:{
-    backgroundColor: "#F4F4F4"
+    backgroundColor: "#FFF"
   },
   logosec: {
     width: Metrics.WIDTH,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
     justifyContent: "center",
     alignSelf: "center",
-    marginTop: Metrics.WIDTH * 0.12
+    marginTop: Metrics.WIDTH * 0.008
   },
   inputStyle: {
     borderColor: "transparent",
@@ -73,8 +73,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     borderRadius: 40,
     width: Metrics.WIDTH * 0.8,
-    backgroundColor: "#E2E2E2",
-    color:"#616161"
+    backgroundColor: "#E2E2E2"
   },
   signInbtn: {
     backgroundColor: "#51B252",
@@ -196,7 +195,63 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30
   },
-  offlineText: { color: '#fff' }
+  offlineText: { color: '#fff' },
+
+  bodyFormInput: {
+    // flex: 3.7,
+    borderColor: "transparent",
+    justifyContent: "center",
+    alignSelf: "center",
+    width: Metrics.WIDTH * 0.8,
+
+    flexDirection:'row',
+    backgroundColor: "transparent",
+    borderRadius:5,
+    height: (Metrics.HEIGHT * 0.072),
+    marginTop: (Metrics.HEIGHT * 0.012),
+    borderColor:'#E2E2E2',
+    borderWidth: 2,
+    borderRadius:20,
+    backgroundColor:"#E2E2E2"
+  },
+
+  bodyFormInputArea: {
+    borderColor: "transparent",
+    justifyContent: "center",
+    alignSelf: "center",
+    width: Metrics.WIDTH * 0.8,
+
+    flexDirection:'row',
+    backgroundColor: "transparent",
+    borderRadius:5,
+    height: (Metrics.HEIGHT * 0.124),
+    marginTop: (Metrics.HEIGHT * 0.012),
+    borderColor:'#E2E2E2',
+    borderWidth: 2,
+    borderRadius:20,
+    backgroundColor:"#E2E2E2"
+  },
+
+  searchViewFormInput:{
+    justifyContent:'center',
+    alignItems:'center',
+    alignContent:"center",
+    alignSelf:"center",
+    marginLeft: (Metrics.WIDTH) * 0.03,
+    backgroundColor: 'transparent',
+    height:30
+  },
+
+  searchTextFormInput:{
+    flex:2,
+    // height:(Metrics.HEIGHT) * 0.066,
+    marginLeft: (Metrics.WIDTH) * 0.02,
+    fontSize: Fonts.moderateScale(15),
+    fontFamily: Fonts.type.sfuiDisplayRegular,
+    color: "#616161",
+    alignSelf:'center',
+    backgroundColor: 'transparent',
+  },
 
 });
 export default styles;

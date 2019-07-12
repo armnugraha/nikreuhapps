@@ -5,7 +5,7 @@ import {
   Platform,
   StatusBar,
   I18nManager,
-  TextInput,
+  ActivityIndicator,
   TouchableOpacity,
   NetInfo,
   BackHandler,
@@ -15,6 +15,8 @@ import {
 import { Content, Toast, Container, Form, Input, Item } from "native-base";
 import { Fonts, Images } from "../../../resources/Themes";
 import styles from "./style";
+
+import Api from '../../../libs/Api';
 
 export default class SignUpScreen extends Component {
   constructor(props) {
@@ -29,7 +31,9 @@ export default class SignUpScreen extends Component {
       gender: "Female",
       ActionToSignin: "SigninScreen",
       ActionToSignup: "SignUpScreen",
-      isConnected: true
+      isConnected: true,
+      loading: false,
+      statusButton: false,
     };
   }
 
@@ -53,6 +57,7 @@ export default class SignUpScreen extends Component {
     if (isConnected) {
       this.setState({ isConnected });
     } else {
+      this.setState({statusButton: true})
       this.setState({ isConnected });
     }
   };
@@ -78,7 +83,49 @@ export default class SignUpScreen extends Component {
     if (username != "" && name != "" && email != "" && password != "") {
 
       if (email.match(mailformat)) {
-        // this._postComment();
+
+        this.setState({loading: true})
+
+        let params = {
+          username: username,
+          name: name,
+          bio: "",
+          phone: "",
+          email:email,
+          password: password,
+        };
+
+        
+        Api.post('/auth/register', params).then(resp =>{
+          
+          if(resp.status == "ok"){
+            
+            let USERID = 1;
+            let USERNAME = username;
+            let NAME = name;
+            let EMAIL = email;
+
+            ToastAndroid.show('Selamat, anda telah berhasil di daftarkan. Silahkan login terlebih dahulu :)', ToastAndroid.SHORT)
+
+            // AsyncStorage.setItem('user_id', JSON.stringify(USERID));
+            // AsyncStorage.setItem('user_name', USERNAME);
+            // AsyncStorage.setItem('name', NAME);
+            // AsyncStorage.setItem('email', EMAIL);
+
+            this.props.navigation.navigate(this.state.ActionToSignin)
+
+          }else{
+            this.setState({statusButton: false})
+            ToastAndroid.show("Maaf register anda gagal!", ToastAndroid.SHORT)
+            this.setState({loading: false})
+          }
+
+        })
+        .catch(error => {
+          this.setState({statusButton: false})
+          ToastAndroid.show("'"+ error +"'", ToastAndroid.SHORT)  
+        });
+
       } else {
         ToastAndroid.show('Inputan email tidak valid', ToastAndroid.SHORT)
         // Toast.show({
@@ -107,6 +154,14 @@ export default class SignUpScreen extends Component {
       )
     }
 
+  }
+
+  loadingView(){
+    if(this.state.loading){
+      return(
+        <ActivityIndicator />
+      )
+    }
   }
 
   render() {
@@ -178,6 +233,9 @@ export default class SignUpScreen extends Component {
                 onSubmitEditing={() => this.signUp(this.state.username, this.state.name, this.state.email, this.state.password)}
               />
             </Item>
+
+            {this.loadingView()}
+
             <TouchableOpacity
               info
               style={styles.signInbtn}

@@ -14,12 +14,14 @@ const headerBG = 'https://i.imgur.com/6gs6CWz.png';
 const firiendProOne = 'https://antiqueruby.aliansoftware.net//Images/profile/card_propic_18.png';
 const firiendProTwo = 'https://antiqueruby.aliansoftware.net//Images/profile/card_propic_18_02.png';
 
+const manglayang = "https://imgur.com/K1Ikdd2.png";
+
 const initialLayout = {
   height: 0,
   width: Dimensions.get('window').width,
 };
 
-export default class ProfileNewsFeedThree extends Component {
+export default class PengelolaScreen extends Component {
 
   componentWillMount() {
     var that = this
@@ -103,16 +105,18 @@ export default class ProfileNewsFeedThree extends Component {
 
   }
 
+  goToEdit(){
+    Actions.push("pengelola_edit_screen");
+  }
+
   render(){
-		StatusBar.setBarStyle('light-content', true);
+		StatusBar.setBarStyle('dark-content', true);
 		if(Platform.OS === 'android') {
 			StatusBar.setBackgroundColor('transparent',true);
 			StatusBar.setTranslucent(true);
     }
     
     const {renderHeader,renderList,renderFooter} = this.state;
-
-    var {dataProps} = this.props
 
     var that = this;
 
@@ -176,7 +180,7 @@ export default class ProfileNewsFeedThree extends Component {
 
     return(
      <Container style={styles.main}>
-       <StatusBar barStyle="light-content" />
+       <StatusBar barStyle="dark-content" />
 
        {this.viewConnection()}
 
@@ -184,25 +188,12 @@ export default class ProfileNewsFeedThree extends Component {
         {
           renderHeader &&
           <View>
-            <ImageBackground source={dataProps.img} style={styles.headerImageBG}>
-              <Header style={styles.header}>
-                  <Left style={styles.left}>
-                    <TouchableOpacity style={styles.backArrow}  onPress={()=>Actions.pop()}>
-                      <FontAwesome name={I18nManager.isRTL ? "angle-right" : "angle-left"} size={25} color='white'/>
-                    </TouchableOpacity>
-                  </Left>
-                  <Body style={styles.body}>
-                    {/* <Text style={styles.textTitle}>Johnie Cornwall</Text> */}
-                  </Body>
-                  <Right style={styles.right}>
-                    
-                  </Right>
-              </Header>
+            <ImageBackground source={{uri:manglayang}} style={styles.headerImageBG}>
 
               <View style={styles.levelDescView}>
                 <View style={{flexDirection:'row'}}>
                   <Left style={{flex:3}}>
-                    <Text numberOfLines={1} style={styles.titleHeaderText}>{dataProps.name}</Text>
+                    <Text style={styles.titleHeaderText}>Gunung Manglayang</Text>
                     <View style={styles.starView}>
                       <Stars
                           half={true}
@@ -214,15 +205,12 @@ export default class ProfileNewsFeedThree extends Component {
                           fullStar={Images.starFilled1}
                           emptyStar={Images.starEmpty1}
                           halfStar={Images.starHalf1} />
-                      {/* <Text style={styles.descText}>
-                        238 Reviews
-                      </Text> */}
                     </View>
                     <View style={styles.placeDistanceBg}>
                       <View style={styles.mapPin}>
                         <FontAwesome name="map-marker" size={12} color="#51B252" />
                       </View>
-                      <Text numberOfLines={1} style={styles.descHeaderText}>{dataProps.address}</Text>
+                      <Text style={styles.descHeaderText}>Kab. Bandung, Jawa Barat</Text>
                     </View>
                   </Left>
                   <Right style={[styles.contentHeaderRight, {flexDirection:'row',alignSelf: 'flex-end',alignItems: 'flex-end',justifyContent: 'flex-end', flex:1}]}>
@@ -236,17 +224,15 @@ export default class ProfileNewsFeedThree extends Component {
                         <FontAwesome name="share-alt" size={22} color="#51B252" />
                       </View>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.cardHeaderButton} onPress={() => this.goToEdit()}>
+                      <View style={styles.headerButtonContent}>
+                        <FontAwesome name="pencil" size={22} color="#51B252" />
+                      </View>
+                    </TouchableOpacity>
                   </Right>
                 </View>
               </View>
             </ImageBackground>
-
-            {/* <View style={styles.profileContent}>
-              <TouchableOpacity
-                onPress={() => this.goToWA()}>
-                  <Text style={styles.levelNo}><FontAwesome name={"phone"} size={32} color='white'/></Text>
-              </TouchableOpacity>
-            </View> */}
 
           </View>
         }
@@ -254,39 +240,10 @@ export default class ProfileNewsFeedThree extends Component {
         {
           renderHeader && renderList &&
           <View>
-            
-            {/* <View style={styles.listMainView}>
-              <View style={{flexDirection:'row'}}>
-                <Text style={styles.separatorText}>Photos(25)</Text>
-                <Right>
-                  <Text style={[styles.separatorText, styles.mgRight]}>Lihat selengkapnya</Text>
-                </Right>
-              </View>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.scrollViewPhotos}>
-                {
-                  data.map((item,index)=>{
-
-                    return(
-                      <View key={index}>
-                        <TouchableOpacity key={item} onPress={() => this.showImage(index)}>
-                          <View key={index} style={styles.friendListView}>
-                            <Image source={{uri:item.image}} style={styles.imgView}/>
-                          </View>
-                        </TouchableOpacity>
-                        
-                        <Modal animationType="slide" visible={this.state.modalVisible} onRequestClose={() => this.modalClose()} style={{backgroundColor: 'white'}}>
-                            <ImageViewer imageUrls={images} saveToLocalByLongPress={false}/>
-                        </Modal>
-                      </View>
-                    )
-                  })
-                }
-              </ScrollView>
-          </View> */}
 
           <View style={{backgroundColor:'#FFF'}}>
             <Text style={styles.separatorText}>Informasi Gunung</Text>
-            <Text style={styles.descText}>{dataProps.desc}</Text>
+            <Text style={styles.descText}>Gunung Manglayang adalah sebuah gunung bertipe Stratovolcano yang terletak di antara Kota Bandung dan Kabupaten Sumedang, Jawa Barat, Indonesia dan memiliki ketinggian sekitar 1818 mdpl. Pemandangannya cukup indah, tetapi karena relatif tidak terlalu tinggi, sehingga kurang dikenal oleh pendaki-pendaki gunung pada umumnya. Dalam deretan gunung-gunung Burangrang – Tangkuban Perahu – Bukit Tunggul – Gunung Manglayang, Gunung Manglayang menjadi gunung yang terindah dari rangkaian keempat gunung tersebut. Mungkin itulah sebabnya di kalangan para penggiat alam bebas, gunung ini sempat terlupakan terkecuali para penggiat alam bebas dari Bandung dan sekitarnya. Walaupun begitu, Gunung Manglayang tetap menawarkan pesona alamnya tersendiri.</Text>
 
             <View style={{flexDirection:'row'}}>
               <Left style={{flex:2}}>
@@ -295,9 +252,9 @@ export default class ProfileNewsFeedThree extends Component {
                 <Text style={styles.descText}>Kesulitan</Text>
               </Left>
               <Right style={{flex:4}}>
-                <Text numberOfLines={1} style={styles.descTextRight}>{dataProps.address}</Text>
-                <Text numberOfLines={1} style={styles.descTextRight}>{dataProps.altitude} Mdpl</Text>
-                <Text numberOfLines={1} style={styles.descTextRight}>{dataProps.type}</Text>
+                <Text style={styles.descTextRight}>Kab. Bandung, Jawa Barat</Text>
+                <Text style={styles.descTextRight}>1818 Mdpl</Text>
+                <Text style={styles.descTextRight}>Medium</Text>
               </Right>
             </View>
           </View>
@@ -334,15 +291,6 @@ export default class ProfileNewsFeedThree extends Component {
             </ImageBackground>
           </View>
 
-          {/* <View style={styles.listMainView}>
-            <View style={{flexDirection:'row'}}>
-              <Text style={styles.separatorText}>Kuota Bulan Ini</Text>
-              <Right>
-                <Text style={[styles.separatorText, styles.mgRight]}>Lihat selengkapnya</Text>
-              </Right>
-            </View>
-            <Text style={styles.descText}>Ini Kuota</Text>
-          </View> */}
         </View>
         }
 
@@ -356,8 +304,7 @@ export default class ProfileNewsFeedThree extends Component {
                     <Text style={[styles.separatorText, styles.mgRight]}>Lihat selengkapnya</Text>
                   </Right>
                 </View> */}
-                
-                {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.scrollViewPhotos}> */}
+
                 {
                   dataFriends.map((item, index) => {
                     return (

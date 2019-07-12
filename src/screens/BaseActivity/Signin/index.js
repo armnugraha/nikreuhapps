@@ -11,7 +11,7 @@ import {
   ImageBackground,
   AsyncStorage,
   NetInfo,
-  ScrollView,
+  ActivityIndicator,
   BackHandler,
   I18nManager,
   ToastAndroid
@@ -34,6 +34,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import LinearGradient from "react-native-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Images } from "../../../resources/Themes";
+import Api from '../../../libs/Api';
+import base64 from 'react-native-base64'
 
 export default class SigninScreen extends React.Component {
   constructor(props) {
@@ -42,11 +44,13 @@ export default class SigninScreen extends React.Component {
     this.state = {
       ActionToSignin: "SigninScreen",
       ActionToSignup: "SignUpScreen",
-      usernameText:'',
-      emailText:'',
+      usernameText:'arman',
+      emailText:'1234',
       passwordText:'',
       getDataWalkThroug:null,
-      isConnected: true
+      isConnected: true,
+      loading: false,
+      statusButton: false,
     };
   }
 
@@ -77,6 +81,7 @@ export default class SigninScreen extends React.Component {
     if (isConnected) {
       this.setState({ isConnected });
     } else {
+      this.setState({statusButton: true})
       this.setState({ isConnected });
     }
   };
@@ -85,7 +90,7 @@ export default class SigninScreen extends React.Component {
     return BackHandler.exitApp();
   };
 
-  login(email, password){
+  login(username, password){
 
     if (!this.state.isConnected) {
 
@@ -95,30 +100,80 @@ export default class SigninScreen extends React.Component {
 
       var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-      if (email != "" && password != "") {
+      if (username != "" && password != "") {
 
-        if (email.match(mailformat)) {
-          this.props.navigation.navigate("MainActivityScreen")
+        // if (email.match(mailformat)) {
 
-          let USERID = 1;
-          let USERNAME = "Arman";
-          let EMAIL = this.state.emailText;
-          AsyncStorage.setItem('user_id', JSON.stringify(USERID));
-          AsyncStorage.setItem('user_name', USERNAME);
-          AsyncStorage.setItem('email', EMAIL);
+          this.setState({loading: true})
+          this.setState({statusButton: true})
 
-        } else {
-          ToastAndroid.show('Inputan email tidak valid', ToastAndroid.SHORT)
-          // Toast.show({
-          //   text: "Please enter valid email.",
-          //   duration:2000,
-          //   type: "danger"
-          // });
-        }
+          let params = {
+            username: username,
+            password: password,
+          };
+      
+          Api.post('/auth', params).then(resp =>{
+
+            if(resp.status == "ok"){
+
+              let getDataToken = resp.data.long;
+              let splitToken = getDataToken.split(".",2);
+
+              let decodeToken = base64.decode(splitToken[1])
+              let splitDataToken = decodeToken.split(":",4);
+
+              let getSplitId = splitDataToken[1];
+              let splitDataId = getSplitId.split(",",1);
+
+              let getSplitEmail = splitDataToken[2];
+              let splitDataEmail = getSplitEmail.split(",",1);
+
+              // let getSplitUsername = splitDataToken[3];
+              // let splitDataUsername = getSplitUsername.split(",",1);
+              
+              if(username == "asep"){
+                this.props.navigation.navigate("AdminMainActivity")
+                AsyncStorage.setItem('pengelola', "TRUE");
+                
+              }else{
+                this.props.navigation.navigate("MainActivityScreen")
+              }
+              
+              ToastAndroid.show('Selamat datang :)', ToastAndroid.SHORT)
+
+              USERID = splitDataId;
+              USERNAME = username;
+
+              AsyncStorage.setItem('user_id', "'" + splitDataId + "'");
+              AsyncStorage.setItem('user_name', username);
+              AsyncStorage.setItem('email', JSON.stringify(splitDataEmail));
+
+            }else{
+              ToastAndroid.show("Maaf login anda gagal!", ToastAndroid.SHORT)
+              this.setState({statusButton: false})
+              this.setState({loading: false})
+            }
+
+          })
+          .catch(error => {
+            ToastAndroid.show("Maaf username atau password salah!", ToastAndroid.SHORT)
+            this.setState({statusButton: false})
+            this.setState({loading: false})
+            // ToastAndroid.show("'"+ error +"'", ToastAndroid.SHORT)
+          });
+
+        // } else {
+        //   ToastAndroid.show('Inputan email tidak valid', ToastAndroid.SHORT)
+        //   // Toast.show({
+        //   //   text: "Please enter valid email.",
+        //   //   duration:2000,
+        //   //   type: "danger"
+        //   // });
+        // }
 
       } else {
         
-        if (email == "" || password == '') {
+        if (username == "" || password == '') {
           ToastAndroid.show('Inputan tidak boleh kosong', ToastAndroid.SHORT)
           return;
         }
@@ -147,11 +202,19 @@ export default class SigninScreen extends React.Component {
 
   }
 
+  loadingView(){
+    if(this.state.loading){
+      return(
+        <ActivityIndicator />
+      )
+    }
+  }
+
   render() {
 
     const { state } = this.props.navigation;
     
-    StatusBar.setBarStyle("light-content", true);
+    StatusBar.setBarStyle("dark-content", true);
     if (Platform.OS == "android") {
       StatusBar.setBackgroundColor("#F4F4F4", true);
       StatusBar.setTranslucent(true);
@@ -165,25 +228,28 @@ export default class SigninScreen extends React.Component {
     return (
       <Container style={styles.bgBody}>
         <StatusBar barStyle="dark-content" />
+
         
         {this.viewConnection()}
 
         <Content>
+        
           <View style={styles.logosec}>
             <Image source={Images.main_logo_transparent} style={styles.logostyle} />
           </View>
+
           <Form style={styles.form}>
             <Item rounded style={styles.inputStyle}>
               <Input
                 placeholderTextColor="#ffffff"
                 textAlign={I18nManager.isRTL ? "right" : "left"}
-                placeholder="Email"
+                placeholder="Username"
                 returnKeyType='next'
-                keyboardType='email-address' 
+                // keyboardType='email-address'
 								autoCapitalize='none'
                 onSubmitEditing={() => this.refs.passwordInput._root.focus()} 
                 style={styles.inputmain}
-                onChangeText={(text) => {this.setState({emailText:text})}}
+                onChangeText={(text) => {this.setState({usernameText:text})}}
               />
             </Item>
             <Item rounded style={[styles.inputStyle, { marginTop: 10 }]}>
@@ -196,18 +262,23 @@ export default class SigninScreen extends React.Component {
                 textAlign={I18nManager.isRTL ? "right" : "left"}
                 onChangeText={(text) => this.setState({passwordText:text})}
                 style={styles.inputmain}
-                onSubmitEditing={() => this.login(this.state.emailText, this.state.passwordText)}
+                onSubmitEditing={() => this.login(this.state.usernameText, this.state.passwordText)}
               />
             </Item>
+
+            {this.loadingView()}
+
             <TouchableOpacity
               info
               style={styles.signInbtn}
-              onPress={() => this.login(this.state.emailText, this.state.passwordText)}
+              disabled={this.state.statusButton}
+              onPress={() => this.login(this.state.usernameText, this.state.passwordText)}
             >
               <Text autoCapitalize="words" style={styles.buttongetstarted}>
                 Sign In
               </Text>
             </TouchableOpacity>
+
           </Form>
           <View iconRight style={styles.fbview}>
             <Text autoCapitalize="words" style={styles.sgText}>
@@ -217,6 +288,7 @@ export default class SigninScreen extends React.Component {
           <View style={styles.bottomView}>
             <TouchableOpacity
               style={styles.sgButton}
+              disabled={this.state.statusButton}
               onPress={() => this.props.navigation.navigate(this.state.ActionToSignup)}
             >
               <View style={styles.sgview}>

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  View,
   Text,
   Image,
   StatusBar,
@@ -8,360 +7,241 @@ import {
   ImageBackground,
   Dimensions,
   TouchableOpacity,
-  ListView,
-  AsyncStorage,
-  I18nManager,
+  View,
   BackHandler,
-  ScrollView
+  AsyncStorage,
+  FlatList
 } from "react-native";
 import {
   Container,
   Button,
   Right,
   Left,
-  ListItem,
   Content,
   Body,
   Header,
-  Title
+  Icon,
+  Title,
+  Picker
 } from "native-base";
-import LinearGradient from "react-native-linear-gradient";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import ReadMore from "react-native-read-more-text";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Entypo from "react-native-vector-icons/Entypo";
-
-import { Actions } from "react-native-router-flux";
-
-// Screen Styles
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Images, Metrics, Fonts, Colors } from "../../../resources/Themes";
+// Screen Styles
 import styles from "./styles";
+import images from "../../../resources/Themes/Images";
+import ListItemData from './ListItemData';
 
-const imageArrayOne = [
-  {
-    id: 1,
-    image: Images.letter
-  },
-  {
-    id: 2,
-    image: Images.loveArrow
-  },
-  {
-    id: 3,
-    image: Images.loveDevil
-  },
-  {
-    id: 4,
-    image: Images.loveLock
-  },
-  {
-    id: 5,
-    image: Images.mobile
-  },
-  {
-    id: 6,
-    image: Images.teddy
+import { withNavigation } from 'react-navigation';
+
+const bgImage =
+  "https://antiqueruby.aliansoftware.net//Images/profile/image_bg_profile_nine.jpg";
+const profileImg =
+  "https://antiqueruby.aliansoftware.net//Images/profile/user_image_p08.png";
+const profileImageTwo =
+  "https://antiqueruby.aliansoftware.net//Images/profile/card_propic_02_p11.png";
+const profileImageThree =
+  "https://antiqueruby.aliansoftware.net//Images/profile/ic_suggested_user_two_profile_nine.png";
+
+class Profile extends Component {
+  componentWillMount() {
+    var that = this;
+    BackHandler.addEventListener("hardwareBackPress", function() {
+      that.props.navigation.navigate("Profile");
+      return true;
+    });
   }
-];
 
-const rowHasChanged = (r1, r2) => r1 !== r2;
-const ds = new ListView.DataSource({ rowHasChanged });
+  static navigationOptions = ({ navigation }) => ({
+    headerStyle: { borderBottomColor:'transparent',borderBottomWidth: 0, shadowColor: 'transparent' },
+  })
 
-export default class Profile extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      dataSource: ds.cloneWithRows(imageArrayOne)
+      isLoading: true,
+      selected: "key1",
+      dataListSource: [
+        {
+          id: 1,
+          img: { uri: "https://imgur.com/7SHivJ1.png" }
+        },
+        {
+          id: 2,
+          img: { uri: "https://imgur.com/MIaJxsG.png" }
+        },
+        {
+          id: 3,
+          img: { uri: "https://imgur.com/0ZW96Pe.png" }
+        },
+        {
+          id: 4,
+          img: { uri: "https://imgur.com/EXnY0Gr.png" }
+        }
+      ]
     };
   }
 
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-  }
+  _renderProfileImageRow(rowData) {
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
-  }
-
-  handleBackPress = () => {
-    this.props.navigation.goBack();
-    return true;
-  };
-
-  _renderRow(rowData) {
+    // alert(rowData)
     return (
-      <View style={{ marginLeft: 12 }}>
+      <View>
         <Image
-          style={{
-            width: Metrics.WIDTH * 0.15,
-            height: Metrics.WIDTH * 0.15,
-            resizeMode: "contain"
-          }}
-          source={rowData.image}
+          style={
+            rowData.id == "1"
+              ? styles.suggestedPeopleImg
+              : styles.suggestedPeopleImgOther
+          }
+          source={rowData.profileImage}
         />
       </View>
     );
   }
 
+  _renderProfileDetailRow(rowData) {
+    return (
+      <View style={styles.mainviewrow}>
+        <Image source={rowData.profileImage} style={styles.mainimgrow} />
+        <View style={styles.row}>
+          <View style={styles.details}>
+            <Text style={styles.name}>{rowData.name}</Text>
+            <Text style={styles.status}>{rowData.status}</Text>
+          </View>
+          {rowData.isTimeStatusOn == "true" ? (
+            <View style={styles.details}>
+              <Ionicons name="md-time" size={15} color="#b7b7b7" />
+              <Text style={styles.time}>{rowData.timeStatus}</Text>
+            </View>
+          ) : (
+            <Text style={styles.descrow}>{rowData.description}</Text>
+          )}
+        </View>
+      </View>
+    );
+  }
+
+  onValueChange(value) {
+    if(value == "logout"){
+      this.props.navigation.navigate("SigninScreen")
+      AsyncStorage.removeItem('user_id')
+			AsyncStorage.removeItem('user_name')
+			AsyncStorage.removeItem('email')
+			AsyncStorage.removeItem('pengelola')
+    }else{
+      this.props.navigation.navigate("profile_edit")
+    }
+  }
+
   render() {
-    StatusBar.setBarStyle("light-content", true);
+    StatusBar.setBarStyle("dark-content", true);
     if (Platform.OS === "android") {
-      StatusBar.setBackgroundColor("#fa6b7b", true);
+      StatusBar.setBackgroundColor("#F4F4F4", true);
       StatusBar.setTranslucent(true);
     }
 
     return (
       <Container style={styles.main}>
-        <Header androidStatusBarColor={"#fa6b7b"} style={styles.header}>
-          {/* Take up the space */}
+        {/* <Image source={{ uri: bgImage }} style={styles.imgContainer} />
+        <Header androidStatusBarColor={"transparent"} style={styles.header}>
           <Left style={styles.left}>
-            <TouchableOpacity onPress={Actions.pop}>
-              {I18nManager.isRTL ? (
-                <FontAwesome name="angle-right" size={30} color="white" />
-              ) : (
-                <FontAwesome name="angle-left" size={30} color="white" />
-              )}
+            <TouchableOpacity
+              style={styles.backArrow}
+              onPress={() => this.props.navigation.navigate("Profile")}
+            >
+              <FontAwesome
+                name={I18nManager.isRTL ? "angle-right" : "angle-left"}
+                size={30}
+                color="white"
+              />
             </TouchableOpacity>
           </Left>
 
-          {/* Title */}
           <Body style={styles.body}>
-            <Title style={{ color: Colors.snow }}>Profile</Title>
+            <Title style={styles.title}>Profiles</Title>
           </Body>
 
-          {/* Right Icon */}
-          <Right style={styles.right} />
-        </Header>
+          <Right style={styles.left}>
+            <Button transparent />
+          </Right>
+        </Header> */}
 
-        <View style={{ flex: 1, backgroundColor: "#f6f6f6" }}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ flexGrow: 1 }}
-          >
-            <View>
-              <View
-                style={{
-                  width: Metrics.WIDTH,
-                  height: Metrics.HEIGHT * 0.3,
-                  alignItems: "center"
-                }}
-              >
-                <ImageBackground
-                  style={{
-                    width: Metrics.WIDTH,
-                    height: Metrics.HEIGHT * 0.3,
-                    backgroundColor: "transparent",
-                    alignItems: "center"
-                  }}
-                  source={Images.profileBgImg}
-                  blurRadius={8}
-                >
-                  <Image source={Images.profileBgImg} style={styles.profile} />
-                  <Text style={styles.name}>John Doe</Text>
-                  <View style={{ flexDirection: "row", marginTop: -12 }}>
-                    <Ionicons
-                      name="ios-male"
-                      size={20}
-                      color="#00aeef"
-                      style={{ marginRight: 5, marginTop: 12 }}
-                    />
-                    <Text
-                      style={[
-                        styles.name,
-                        { fontSize: Fonts.moderateScale(18) }
-                      ]}
+        <StatusBar setBackgroundColor="#F4F4F4" barStyle="dark-content" />
+
+        <Content>
+          <View>
+            <ImageBackground source={images.main_bg_profil} style={styles.imgHeader}>
+        
+              {/* <View style={styles.morePicker}> */}
+              <Header androidStatusBarColor={"#F4F4F4"} style={styles.header}>
+              <StatusBar setBackgroundColor="#F4F4F4" barStyle="dark-content" />
+                  <Left style={styles.left}>
+                    
+                  </Left>
+                  <Body style={styles.body}>
+                    {/* <Text style={styles.textTitle}>Johnie Cornwall</Text> */}
+                  </Body>
+                  <Right style={{flex: 0.4}}>
+                    <Picker
+                      mode="dropdown"
+                      iosIcon={<FontAwesome name="ellipsis-v" size={25} color='white'/>}
+                      style={{ width: undefined }}
+                      selectedValue={this.state.selected}
+                      onValueChange={this.onValueChange.bind(this)}
                     >
-                      25
-                    </Text>
-                  </View>
-                </ImageBackground>
-              </View>
+                      <Picker.Item label="~Select~" value="" />
+                      <Picker.Item label="Edit Profile" value="edit" />
+                      <Picker.Item label="Logout" value="logout" />
+                    </Picker>
+                  </Right>
+              </Header>
+              {/* </View> */}
+              <Image source={{ uri: profileImg }} style={styles.profileImgHeader} />
+              <Text style={styles.textName}>
+                {USERNAME}
+              </Text>
+              <Text style={styles.textMotiv}>
+                mulih kajati mulang ka asal
+              </Text>
+            </ImageBackground>
+          </View>
 
-              <View style={styles.aboutView}>
-                <Text style={styles.aboutText}>About Me</Text>
-                <Text style={styles.aboutDescription}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur.
-                </Text>
-              </View>
-
-              <View style={styles.aboutView}>
-                <ListView
-                  showsHorizontalScrollIndicator={false}
-                  horizontal={true}
-                  dataSource={this.state.dataSource}
-                  renderRow={this._renderRow.bind(this)}
-                  enableEmptySections
-                  scrollEnabled={true}
+          <FlatList
+            data={this.state.dataListSource}
+            numColumns={2}
+            style={styles.listContent}
+            renderItem = {({item, index}) => (
+                <ListItemData
+                  {...item}
                 />
-              </View>
+              )            
+            }
 
-              <View style={[styles.aboutView, { paddingRight: 0 }]}>
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Address</Text>
-                  <Text style={styles.ansText}>California,USA</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Birthday</Text>
-                  <Text style={styles.ansText}>04/16/1988</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Status</Text>
-                  <Text style={styles.ansText}>Single</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Gender</Text>
-                  <Text style={styles.ansText}>Male</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Nation</Text>
-                  <Text style={styles.ansText}>Italia</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-              </View>
-
-              <Text style={styles.advanceText}>Advance</Text>
-              <View
-                style={[styles.aboutView, { paddingRight: 0, marginBottom: 0 }]}
-              >
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Religion</Text>
-                  <Text style={styles.ansText}>California,USA</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Sport</Text>
-                  <Text style={styles.ansText}>04/16/1988</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Travel</Text>
-                  <Text style={styles.ansText}>One per year</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Income</Text>
-                  <Text style={styles.ansText}>$500-$1000</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Style</Text>
-                  <Text style={styles.ansText}>Fashion</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Smoke</Text>
-                  <Text style={styles.ansText}>No Smoke</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-
-                <View style={styles.infoDivider} />
-
-                <View style={styles.infoView}>
-                  <Text style={styles.titleText}>Beer</Text>
-                  <Text style={styles.ansText}>Little</Text>
-                  <Entypo
-                    name="chevron-small-right"
-                    size={25}
-                    color="#c7c7cc"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
+            keyExtractor = {(item, index) => index.toString()}
+          />
+          
+        </Content>
       </Container>
     );
   }
+  _renderTruncatedFooter = handlePress => {
+    return (
+      <Text style={styles.viewMoreLessTxt} onPress={handlePress}>
+        View more
+      </Text>
+    );
+  };
+
+  _renderRevealedFooter = handlePress => {
+    return (
+      <Text style={styles.viewMoreLessTxt} onPress={handlePress}>
+        View less
+      </Text>
+    );
+  };
 }
+
+
+export default withNavigation(Profile);
