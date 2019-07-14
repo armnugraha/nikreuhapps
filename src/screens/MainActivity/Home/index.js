@@ -12,7 +12,8 @@ import {
   NetInfo,
   ToastAndroid,
   BackHandler,
-  TextInput
+  TextInput,
+  ImageBackground
 } from "react-native";
 import {
   Container,
@@ -427,11 +428,16 @@ export default class Home extends Component {
               {new_collection.map((item, index) => {
                 return (
                   <View style={styles.slide} key={index}>
-                    <Image source={item.image} style={styles.sliderImage} />
-                    <View style={styles.contentStyle}>
-                      <Text style={styles.headertext}>{item.title}</Text>
-                      <Text style={styles.desctext}>{item.description}</Text>
-                    </View>
+                    {/* <ImageBackground source={Images.No_image_found} style={styles.sliderImage}> */}
+                      <Image source={item.image} style={styles.sliderImage} 
+                        // onError={(e) => { this.props.source = Image }}
+                        defaultSource={Images.No_image_found}
+                       />
+                      <View style={styles.contentStyle}>
+                        <Text style={styles.headertext}>{item.title}</Text>
+                        <Text style={styles.desctext}>{item.description}</Text>
+                      </View>
+                    {/* </ImageBackground> */}
                   </View>
                 );
               })}

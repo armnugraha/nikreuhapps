@@ -54,18 +54,22 @@ export default class ListItemData extends Component {
 
     return (
       <TouchableOpacity
+        activeOpacity={1}
         style={styles.listMainview}
         onPress={() =>
           this.showDetail(this.props)
         }
       >
         <View style={{backgroundColor:"#FFF", borderRadius: 8}}>
-        <CachedImage
-          source={{uri: img}}
-          style={styles.destinationimg}
-        >
-          <TouchableOpacity />
-        </CachedImage>
+          <ImageBackground source={Images.No_image_found} style={styles.destinationimg}>
+            <CachedImage
+              source={{uri: img}}
+              style={styles.destinationimg}
+              // onError={(e) => { this.props.source = { uri: 'https://example.domain.com/no-photo.png' }}}
+            >
+              <TouchableOpacity />
+            </CachedImage>
+          </ImageBackground>
           <Text numberOfLines={1} style={styles.destinationnamelist}>
             {name}
           </Text>

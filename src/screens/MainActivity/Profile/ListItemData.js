@@ -27,11 +27,7 @@ import {
   Title,
   Separator
 } from "native-base";
-import Swiper from "react-native-swiper";
-import LinearGradient from "react-native-linear-gradient";
 import { Actions } from "react-native-router-flux";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { Images, Metrics, Fonts, Colors } from "../../../resources/Themes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Stars from 'react-native-stars';
@@ -58,15 +54,18 @@ export default class ListItemData extends Component {
 
     return (
       <TouchableOpacity
+        activeOpacity={1}
         style={styles.listMainview}
       >
         <View style={{backgroundColor:"#FFF", borderRadius: 8}}>
+          <ImageBackground source={Images.No_image_found} style={styles.destinationimg}>
             <CachedImage
                 source={img}
                 style={styles.destinationimg}
             >
-            <TouchableOpacity />
+              <TouchableOpacity />
             </CachedImage>
+          </ImageBackground>
         </View>
       </TouchableOpacity>
     );
