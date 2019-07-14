@@ -51,6 +51,17 @@ class Profile extends Component {
       that.props.navigation.navigate("Profile");
       return true;
     });
+
+    const {usernameUpdate, bioUpdate} = this.props
+
+    if(usernameUpdate){
+      this.setState({getUsername: usernameUpdate})
+      this.setState({getBio: bioUpdate})
+    }else{
+      this.setState({getUsername: USERNAME})
+      this.setState({getBio: "mulih kajati mulang ka asal"})
+    }
+
   }
 
   static navigationOptions = ({ navigation }) => ({
@@ -80,7 +91,9 @@ class Profile extends Component {
           id: 4,
           img: { uri: "https://imgur.com/EXnY0Gr.png" }
         }
-      ]
+      ],
+      getUsername:"",
+      getBio:"",
     };
   }
 
@@ -133,6 +146,36 @@ class Profile extends Component {
     }else{
       this.props.navigation.navigate("profile_edit")
     }
+  }
+
+  changeNmae(){
+    const {usernameUpdate, bioUpdate} = this.props
+
+    if(usernameUpdate){
+      this.setState({getUsername: usernameUpdate})
+      this.setState({getBio: bioUpdate})
+    }else{
+      return null;
+    }
+  }
+
+  viewName(){
+
+    this.changeNmae()
+
+    return(
+      <View>
+
+        <Text style={styles.textName}>
+          {this.state.getUsername}
+        </Text>
+        <Text style={styles.textMotiv}>
+          {this.state.getBio}
+        </Text>
+
+      </View>
+    )
+
   }
 
   render() {
@@ -199,12 +242,9 @@ class Profile extends Component {
               </Header>
               {/* </View> */}
               <Image source={{ uri: profileImg }} style={styles.profileImgHeader} />
-              <Text style={styles.textName}>
-                {USERNAME}
-              </Text>
-              <Text style={styles.textMotiv}>
-                mulih kajati mulang ka asal
-              </Text>
+
+              {this.viewName()}
+
             </ImageBackground>
           </View>
 

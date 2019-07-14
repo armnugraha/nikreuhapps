@@ -10,7 +10,8 @@ import {
   NetInfo,
   BackHandler,
   Image,
-  ToastAndroid
+  ToastAndroid,
+  AsyncStorage
 } from "react-native";
 import { Content, Toast, Header, Left, Body, Right, Container, Form, Input, Item } from "native-base";
 import { Fonts, Images } from "../../../resources/Themes";
@@ -34,34 +35,45 @@ export default class ProfileEditScreen extends Component {
       bio:"",
       gender: "Female",
       ActionToSignin: "SigninScreen",
-      ActionToSignup: "SignUpScreen",
       isConnected: true,
       loading: false,
       statusButton: false,
       dataUser:""
     };
+
   }
 
   componentDidMount() {
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
-
-    
-    let getDataUserId = USERID;
-    let splitUserId = getDataUserId.split('"',2);
-
-    Api.get("/users?id=" + splitUserId[1]).then(resp =>{
-      this.setState({dataUser: resp})
-    })
-    .catch(error =>{
-      ToastAndroid.show("'"+error+"'", ToastAndroid.SHORT)
-    });
-
   }
 
   componentWillMount() {
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
 
     BackHandler.addEventListener("hardwareBackPress", this.backPressed);
+
+    let getDataUserId = USERID;
+    let splitUserId = getDataUserId.split('"',2);
+
+    this.setState({statusButton: true})
+    this.setState({loading: true})
+
+    Api.get("/users?id=" + splitUserId[1]).then(resp =>{
+      this.setState({username: resp[0].username})
+      this.setState({name: resp[0].name})
+      this.setState({phone: resp[0].phone})
+      this.setState({email: resp[0].email})
+      this.setState({bio: resp[0].bio})
+      this.setState({password: resp[0].password})
+
+      this.setState({statusButton: false})
+      this.setState({loading: false})
+
+    })
+    .catch(error =>{
+      ToastAndroid.show("'"+error+"'", ToastAndroid.SHORT)
+    });
+
   }
 
   componentWillUnmount() {
@@ -93,43 +105,44 @@ export default class ProfileEditScreen extends Component {
     }
   };
 
-  signUp(username, name, email, password){
+  updateUser(username, name, phone, email, bio, password){
 
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    let getDataUserId = USERID;
+    let splitUserId = getDataUserId.split('"',2);
 
-    if (username != "" && name != "" && email != "" && password != "") {
+    if (username != "" && name != "" && phone != "" && email != "" && bio != "" && password != "") {
 
       if (email.match(mailformat)) {
 
         this.setState({loading: true})
 
         let params = {
+          id:splitUserId[1],
           username: username,
           name: name,
-          bio: "",
-          phone: "",
+          phone: phone,
           email:email,
+          bio: bio,
           password: password,
         };
 
         
-        Api.post('/auth/register', params).then(resp =>{
+        Api.put('/users', params).then(resp =>{
           
           if(resp.status == "ok"){
             
-            let USERID = 1;
-            let USERNAME = username;
-            let NAME = name;
-            let EMAIL = email;
+            USERNAME = username;
+            NAME = name;
+            EMAIL = email;
 
-            ToastAndroid.show('Selamat, anda telah berhasil di daftarkan. Selamat datang :)', ToastAndroid.SHORT)
+            ToastAndroid.show('Profil telah di perbaharui :)', ToastAndroid.SHORT)
 
-            AsyncStorage.setItem('user_id', JSON.stringify(USERID));
             AsyncStorage.setItem('user_name', USERNAME);
             AsyncStorage.setItem('name', NAME);
             AsyncStorage.setItem('email', EMAIL);
 
-            this.props.navigation.navigate("MainActivityScreen")
+            Actions.pop({refresh: {usernameUpdate: username, bioUpdate: bio} })
 
           }else{
             this.setState({statusButton: false})
@@ -187,8 +200,6 @@ export default class ProfileEditScreen extends Component {
       StatusBar.setTranslucent(true);
     }
 
-    const {dataUser} = this.state
-
     return (
       <Container style={styles.bgBody}>
         
@@ -199,7 +210,7 @@ export default class ProfileEditScreen extends Component {
             </TouchableOpacity>
           </Left>
           <Body style={{flex:2}}>
-            <Text>Edit Profile</Text>
+            <Text>Edit Profile {USERNAME}</Text>
           </Body>
           <Right style={{flex:4}}>
           </Right>
@@ -227,7 +238,7 @@ export default class ProfileEditScreen extends Component {
                 returnKeyType='next'
                 keyboardType="default"
                 selectionColor={"#6f6f6f"}
-                value={this.state.textSearch}
+                value={this.state.username}
                 onSubmitEditing={() => this.refs.nameInput._root.focus()} 
                 onChangeText={(text) => {this.setState({username:text})}}
               />
@@ -248,6 +259,7 @@ export default class ProfileEditScreen extends Component {
                 returnKeyType='next'
                 autoCapitalize='none'
                 selectionColor={"#6f6f6f"}
+                value={this.state.name}
                 onSubmitEditing={() => this.refs.phoneInput._root.focus()} 
                 style={styles.searchTextFormInput}
                 onChangeText={(text) => {this.setState({name:text})}}
@@ -270,6 +282,7 @@ export default class ProfileEditScreen extends Component {
                 returnKeyType='next'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.phone}
                 onSubmitEditing={() => this.refs.emailInput._root.focus()}
                 onChangeText={(text) => {this.setState({phone:text})}}
               />
@@ -292,6 +305,7 @@ export default class ProfileEditScreen extends Component {
                 autoCapitalize='none'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.email}
                 onSubmitEditing={() => this.refs.bioInput._root.focus()}
                 onChangeText={(text) => {this.setState({email:text})}}
               />
@@ -314,6 +328,7 @@ export default class ProfileEditScreen extends Component {
                 autoCapitalize='none'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.bio}
                 onChangeText={(text) => {this.setState({bio:text})}}
               />
             </View>
@@ -336,8 +351,9 @@ export default class ProfileEditScreen extends Component {
                 autoCapitalize='none'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.password}
                 onChangeText={(text) => this.setState({password:text})}
-                onSubmitEditing={() => this.signUp(this.state.username, this.state.name, this.state.email, this.state.password)}
+                onSubmitEditing={() => this.updateUser(this.state.username, this.state.name, this.state.phone, this.state.email, this.state.bio, this.state.password)}
               />
             </View>
             
@@ -346,7 +362,7 @@ export default class ProfileEditScreen extends Component {
             <TouchableOpacity
               info
               style={styles.signInbtn}
-              onPress={() => this.signUp(this.state.username, this.state.name, this.state.email, this.state.password)}
+              onPress={() => this.updateUser(this.state.username, this.state.name, this.state.phone, this.state.email, this.state.bio, this.state.password)}
             >
               <Text autoCapitalize="words" style={styles.buttongetstarted}>
                 Save
