@@ -378,18 +378,34 @@ export default class Home extends Component {
   searchFilter(text){
 
     if(text == ""){
+      this.fetchNear()
+
       this.setState({isSearch: false})
       this.setState({textSearch: null})
       this.setState({titleListGunung: "List Gunung"})
+
     }else{
+      this.setState({loading: true})
+
       this.setState({isSearch: true})
       this.setState({textSearch: text})
       this.setState({titleListGunung: "Hasil Pencarian"})
+
+      Api.get("/search?key=" + text).then(resp =>{
+        this.setState({dataListSource: resp})
+        this.setState({loading: false})
+      })
+      .catch(error =>{
+        ToastAndroid.show("'"+error+"'", ToastAndroid.SHORT)
+        this.setState({loading: false})
+      });
+
     }
 
   }
 
   clearFilter(){
+    this.fetchNear()
     this.setState({isSearch: false})
     this.setState({textSearch: null})
     this.setState({titleListGunung: "List Gunung"})
