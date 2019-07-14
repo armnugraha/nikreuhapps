@@ -142,7 +142,8 @@ export default class ProfileEditScreen extends Component {
             AsyncStorage.setItem('name', NAME);
             AsyncStorage.setItem('email', EMAIL);
 
-            Actions.pop({refresh: {usernameUpdate: username, bioUpdate: bio} })
+            this.props.callReloadData(username, bio)
+            Actions.pop()
 
           }else{
             this.setState({statusButton: false})
@@ -210,7 +211,7 @@ export default class ProfileEditScreen extends Component {
             </TouchableOpacity>
           </Left>
           <Body style={{flex:2}}>
-            <Text>Edit Profile {USERNAME}</Text>
+            <Text>Edit Profile</Text>
           </Body>
           <Right style={{flex:4}}>
           </Right>

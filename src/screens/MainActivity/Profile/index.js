@@ -45,24 +45,6 @@ const profileImageThree =
   "https://antiqueruby.aliansoftware.net//Images/profile/ic_suggested_user_two_profile_nine.png";
 
 class Profile extends Component {
-  componentWillMount() {
-    var that = this;
-    BackHandler.addEventListener("hardwareBackPress", function() {
-      that.props.navigation.navigate("Profile");
-      return true;
-    });
-
-    const {usernameUpdate, bioUpdate} = this.props
-
-    if(usernameUpdate){
-      this.setState({getUsername: usernameUpdate})
-      this.setState({getBio: bioUpdate})
-    }else{
-      this.setState({getUsername: USERNAME})
-      this.setState({getBio: "mulih kajati mulang ka asal"})
-    }
-
-  }
 
   static navigationOptions = ({ navigation }) => ({
     headerStyle: { borderBottomColor:'transparent',borderBottomWidth: 0, shadowColor: 'transparent' },
@@ -136,6 +118,18 @@ class Profile extends Component {
     );
   }
 
+  componentWillMount() {
+    var that = this;
+    BackHandler.addEventListener("hardwareBackPress", function() {
+      that.props.navigation.navigate("Profile");
+      return true;
+    });
+
+    this.setState({getUsername: USERNAME})
+    this.setState({getBio: "mulih kajati mulang ka asal"})
+
+  }
+
   onValueChange(value) {
     if(value == "logout"){
       this.props.navigation.navigate("SigninScreen")
@@ -144,39 +138,16 @@ class Profile extends Component {
 			AsyncStorage.removeItem('email')
 			AsyncStorage.removeItem('pengelola')
     }else{
-      this.props.navigation.navigate("profile_edit")
+      this.props.navigation.navigate("profile_edit", {callReloadData:this.callReloadData})
     }
   }
 
-  changeNmae(){
-    const {usernameUpdate, bioUpdate} = this.props
-
-    if(usernameUpdate){
-      this.setState({getUsername: usernameUpdate})
-      this.setState({getBio: bioUpdate})
-    }else{
-      return null;
-    }
-  }
-
-  viewName(){
-
-    this.changeNmae()
-
-    return(
-      <View>
-
-        <Text style={styles.textName}>
-          {this.state.getUsername}
-        </Text>
-        <Text style={styles.textMotiv}>
-          {this.state.getBio}
-        </Text>
-
-      </View>
-    )
-
-  }
+  //CALLBACK FOR ANOTHER COMPONENT USE THIS METHOD
+	callReloadData = (usernameUpdate, bioUpdate) =>{
+    const { store } = this.props;
+    this.setState({getUsername: usernameUpdate})
+    this.setState({getBio: bioUpdate})
+	}
 
   render() {
     StatusBar.setBarStyle("dark-content", true);
@@ -243,7 +214,12 @@ class Profile extends Component {
               {/* </View> */}
               <Image source={{ uri: profileImg }} style={styles.profileImgHeader} />
 
-              {this.viewName()}
+              <Text style={styles.textName}>
+                {this.state.getUsername}
+              </Text>
+              <Text style={styles.textMotiv}>
+                {this.state.getBio}
+              </Text>
 
             </ImageBackground>
           </View>
