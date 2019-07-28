@@ -5,7 +5,7 @@ import { Container, Button, Icon, Right, Item, Input, Header, Footer, FooterTab,
 import styles from './styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Images, Colors, Fonts, Metrics } from '../../../resources/Themes';
+import { Images } from '../../../resources/Themes';
 import Stars from 'react-native-stars';
 import { Actions } from "react-native-router-flux";
 import ImageViewer from 'react-native-image-zoom-viewer';

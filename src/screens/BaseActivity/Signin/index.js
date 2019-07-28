@@ -14,7 +14,8 @@ import {
   ActivityIndicator,
   BackHandler,
   I18nManager,
-  ToastAndroid
+  ToastAndroid,
+  PermissionsAndroid
 } from "react-native";
 import {
   Container,
@@ -56,6 +57,23 @@ export default class SigninScreen extends React.Component {
 
   componentDidMount() {
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+    this.requestLocationPermission();
+  }
+
+  async requestLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': 'Cool Location Permission',
+          'message': 'Cool Location App needs access to your location '
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      } else {
+      }
+    } catch (err) {
+    }
   }
 
   componentWillMount() {
@@ -121,6 +139,7 @@ export default class SigninScreen extends React.Component {
 
               let decodeToken = base64.decode(splitToken[1])
               let splitDataToken = decodeToken.split(":",4);
+              let splitDataTokenComma = decodeToken.split(",",4);
 
               let getSplitId = splitDataToken[1];
               let splitDataId = getSplitId.split(",",1);
@@ -128,23 +147,34 @@ export default class SigninScreen extends React.Component {
               let getSplitEmail = splitDataToken[2];
               let splitDataEmail = getSplitEmail.split(",",1);
 
-              // let getSplitUsername = splitDataToken[3];
-              // let splitDataUsername = getSplitUsername.split(",",1);
-              
-              if(username == "asep"){
-                this.props.navigation.navigate("AdminMainActivity")
-                AsyncStorage.setItem('pengelola', "TRUE");
+              let getSplitCheckAdmin = splitDataTokenComma[2];
+              let splitDataCheckAdmin = getSplitCheckAdmin.split(":",1);
+
+              if(splitDataCheckAdmin == JSON.stringify("mount_id")){
+                  
+                  let getSplitMountId = splitDataToken[3];
+                  let splitDataMountId = getSplitMountId.split(",",1);
+
+                  MOUNTID = JSON.stringify(splitDataMountId)
+
+                  AsyncStorage.setItem('mount_id', JSON.stringify(splitDataMountId));
                 
-              }else{
-                this.props.navigation.navigate("MainActivityScreen")
-              }
+                  this.props.navigation.navigate("AdminMainActivity")
+                  AsyncStorage.setItem('pengelola', "TRUE");
               
+              }else{
+
+                  this.props.navigation.navigate("MainActivityScreen")
+
+              }
+
               ToastAndroid.show('Selamat datang :)', ToastAndroid.SHORT)
 
-              USERID = splitDataId;
+              USERID = JSON.stringify(splitDataId);
               USERNAME = username;
 
-              AsyncStorage.setItem('user_id', "'" + splitDataId + "'");
+              // AsyncStorage.setItem('user_id', "'" + splitDataId + "'");
+              AsyncStorage.setItem('user_id', JSON.stringify(splitDataId));
               AsyncStorage.setItem('user_name', username);
               AsyncStorage.setItem('email', JSON.stringify(splitDataEmail));
 

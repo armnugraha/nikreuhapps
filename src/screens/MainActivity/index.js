@@ -41,6 +41,9 @@ import Kosong from "./kosong";
 import SignUpScreen from "../BaseActivity/SignUp";
 import ProfileEditScreen from "./ProfileEdit";
 import AdminScreen from "./index_admin";
+import TrackingModes from "./maps";
+import RecordModes from "./MapRecords";
+import NavigationScreen from "./Navigations";
 
 const styles = StyleSheet.create({
   container: {
@@ -162,6 +165,10 @@ export default class Example extends Component {
 
                 <Scene key="tab_3_2" component={Filter} hideNavBar />
                 <Scene key="kos" component={Kosong} hideNavBar />
+                
+                <Scene key="maps" component={TrackingModes} hideNavBar />
+                <Scene key="maps_record" component={RecordModes} hideNavBar />
+
                 {/* <Scene key="tab_3_3" component={DiscoveryDetails} hideNavBar /> */}
 
                 <Scene hideNavBar initial panHandlers={null} key="mainTab">
@@ -216,7 +223,7 @@ export default class Example extends Component {
                     <Stack key="tab_4" title="Navigation" icon={TabIcon}>
                       <Scene
                         key="tab_4_1"
-                        component={Kosong}
+                        component={NavigationScreen}
                         title="Favorite"
                         hideNavBar
                         icon={TabIcon}

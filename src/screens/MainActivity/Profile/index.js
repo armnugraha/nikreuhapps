@@ -126,7 +126,12 @@ class Profile extends Component {
     });
 
     this.setState({getUsername: USERNAME})
-    this.setState({getBio: "mulih kajati mulang ka asal"})
+
+    if(BIO == null){
+      this.setState({getBio: "mulih kajati mulang ka asal"})
+    }else{
+      this.setState({getBio: BIO})
+    }
 
   }
 
@@ -137,6 +142,7 @@ class Profile extends Component {
 			AsyncStorage.removeItem('user_name')
 			AsyncStorage.removeItem('email')
 			AsyncStorage.removeItem('pengelola')
+			AsyncStorage.removeItem('mount_id')
     }else{
       this.props.navigation.navigate("profile_edit", {callReloadData:this.callReloadData})
     }

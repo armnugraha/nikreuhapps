@@ -546,8 +546,9 @@ export default class Home extends Component {
               autoCapitalize="none"
               keyboardType="default"
               selectionColor={"#6f6f6f"}
-              value={this.state.textSearch}
-              onChangeText={text => this.searchFilter(text)}
+              // value={this.state.textSearch}
+              onChangeText={text => this.setState({textSearch: text})}
+              onSubmitEditing={(text) => this.searchFilter(this.state.textSearch)}
             />
 
             {this.renderCloseSearch()}

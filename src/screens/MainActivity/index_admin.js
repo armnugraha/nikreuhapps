@@ -43,6 +43,9 @@ import ProfileEditScreen from "./ProfileEdit";
 import PengelolaScreen from "./Pengelola";
 import PengelolaEditScreen from "./PengelolaEdit";
 import Example from ".";
+import TrackingModes from "./maps";
+import RecordModes from "./MapRecords";
+import NavigationScreen from "./Navigations";
 
 const styles = StyleSheet.create({
   container: {
@@ -167,6 +170,11 @@ export default class AdminScreen extends Component {
                 <Scene key="pengelola_screen" component={PengelolaScreen} hideNavBar/>
                 <Scene key="pengelola_edit_screen" component={PengelolaEditScreen} hideNavBar/>
 
+                <Scene key="navigation_screen" component={NavigationScreen} title={"Gunung Tersimpan"} />
+
+                <Scene key="maps"  component={TrackingModes} hideNavBar />
+                <Scene key="maps_record" component={RecordModes} hideNavBar />
+                
                 <Scene key="kos" component={Kosong} hideNavBar />
                 {/* <Scene key="tab_3_3" component={DiscoveryDetails} hideNavBar /> */}
 
@@ -223,7 +231,7 @@ export default class AdminScreen extends Component {
                     <Stack key="tab_4" title="Navigation" icon={TabIcon}>
                       <Scene
                         key="tab_4_1"
-                        component={Kosong}
+                        component={NavigationScreen}
                         title="Favorite"
                         hideNavBar
                         icon={TabIcon}

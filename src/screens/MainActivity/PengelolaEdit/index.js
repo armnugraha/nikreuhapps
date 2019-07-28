@@ -25,18 +25,14 @@ export default class PengelolaEditScreen extends Component {
     super(props);
 
     this.state = {
-      username: "",
       name: "",
       phone: "",
-      password: "",
-      birthday: "",
       email: "",
       bio: "",
       ketinggian: "",
       location:"",
       price:"",
       deskripsi:"",
-      gender: "Female",
       ActionToSignin: "SigninScreen",
       ActionToSignup: "SignUpScreen",
       isConnected: true,
@@ -53,6 +49,30 @@ export default class PengelolaEditScreen extends Component {
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
 
     BackHandler.addEventListener("hardwareBackPress", this.backPressed);
+
+    let getDataMountId = JSON.parse(MOUNTID);
+    let splitMountId = JSON.parse(getDataMountId);
+
+    this.setState({statusButton: true})
+    this.setState({loading: true})
+
+    Api.get("/admin/mounts?id=" + splitMountId).then(resp =>{
+      alert(JSON.stringify(resp[0].price))
+      this.setState({name: resp[0].name})
+      this.setState({phone: resp[0].phone})
+      this.setState({ketinggian: resp[0].altitude})
+      this.setState({location: resp[0].address})
+      this.setState({price: resp[0].price})
+      this.setState({deskripsi: resp[0].desc})
+
+      this.setState({statusButton: false})
+      this.setState({loading: false})
+
+    })
+    .catch(error =>{
+      ToastAndroid.show("'"+error+"'", ToastAndroid.SHORT)
+    });
+
   }
 
   componentWillUnmount() {
@@ -216,7 +236,7 @@ export default class PengelolaEditScreen extends Component {
                 returnKeyType='next'
                 keyboardType="default"
                 selectionColor={"#6f6f6f"}
-                value={this.state.textSearch}
+                value={this.state.name}
                 onSubmitEditing={() => this.refs.ketinggianInput._root.focus()} 
                 onChangeText={(text) => {this.setState({name:text})}}
               />
@@ -234,12 +254,13 @@ export default class PengelolaEditScreen extends Component {
                 textAlign={I18nManager.isRTL ? "right" : "left"}
                 placeholder="Ketinggian"
                 placeholderTextColor="#616161"
-                keyboardType='numeric'
+                // keyboardType='numeric'
                 underlineColorAndroid="transparent"
                 returnKeyType='next'
                 autoCapitalize='none'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.ketinggian}
                 onSubmitEditing={() => this.refs.phoneInput._root.focus()} 
                 onChangeText={(text) => {this.setState({ketinggian:text})}}
               />
@@ -255,14 +276,15 @@ export default class PengelolaEditScreen extends Component {
                 ref='phoneInput'
                 textAlign={I18nManager.isRTL ? "right" : "left"}
                 placeholder="Phone"
-                keyboardType='numeric'
-                maxLength={13}
+                // keyboardType='numeric'
+                // maxLength={13}
                 autoCapitalize='none'
                 placeholderTextColor="#616161"
                 underlineColorAndroid="transparent"
                 returnKeyType='next'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.phone}
                 onSubmitEditing={() => this.refs.lokasiInput._root.focus()}
                 onChangeText={(text) => {this.setState({phone:text})}}
               />
@@ -306,6 +328,7 @@ export default class PengelolaEditScreen extends Component {
                 autoCapitalize='none'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.location}
                 onSubmitEditing={() => this.refs.hargaInput._root.focus()}
                 onChangeText={(text) => {this.setState({location:text})}}
               />
@@ -321,13 +344,14 @@ export default class PengelolaEditScreen extends Component {
                 ref='hargaInput'
                 textAlign={I18nManager.isRTL ? "right" : "left"}
                 placeholder="Harga"
-                keyboardType='numeric'
-                maxLength={13}
+                // keyboardType='numeric'
+                // maxLength={13}
                 placeholderTextColor="#616161"
                 underlineColorAndroid="transparent"
                 returnKeyType='next'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.price}
                 onSubmitEditing={() => this.refs.deskripsiInput._root.focus()}
                 onChangeText={(text) => {this.setState({price:text})}}
               />
@@ -350,6 +374,7 @@ export default class PengelolaEditScreen extends Component {
                 autoCapitalize='none'
                 selectionColor={"#6f6f6f"}
                 style={styles.searchTextFormInput}
+                value={this.state.deskripsi}
                 onChangeText={(text) => {this.setState({deskripsi:text})}}
               />
             </View>

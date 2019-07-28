@@ -52,13 +52,13 @@ export default class ProfileEditScreen extends Component {
 
     BackHandler.addEventListener("hardwareBackPress", this.backPressed);
 
-    let getDataUserId = USERID;
-    let splitUserId = getDataUserId.split('"',2);
+    let getDataUserId = JSON.parse(USERID);
+    let splitUserId = JSON.parse(getDataUserId);
 
     this.setState({statusButton: true})
     this.setState({loading: true})
 
-    Api.get("/users?id=" + splitUserId[1]).then(resp =>{
+    Api.get("/users?id=" + splitUserId).then(resp =>{
       this.setState({username: resp[0].username})
       this.setState({name: resp[0].name})
       this.setState({phone: resp[0].phone})
@@ -135,6 +135,7 @@ export default class ProfileEditScreen extends Component {
             USERNAME = username;
             NAME = name;
             EMAIL = email;
+            BIO = bio;
 
             ToastAndroid.show('Profil telah di perbaharui :)', ToastAndroid.SHORT)
 
